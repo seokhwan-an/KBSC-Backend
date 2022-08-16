@@ -9,18 +9,18 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@Table(name = "DiaryLikes")
+@Table(name = "diary_like")
 public class DiaryLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(targetEntity = Diary.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Diary.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     private Diary diary;
 

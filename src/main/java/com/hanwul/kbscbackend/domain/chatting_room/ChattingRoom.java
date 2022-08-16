@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "ChattingRooms")
+@Table(name = "chatting_room")
 public class ChattingRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,6 @@ public class ChattingRoom {
     @JoinColumn(name = "to_id")
     private User participant;
 
-    @OneToMany(mappedBy = "chattingroom", cascade = CascadeType.ALL)
-    private List<ChattingMessage> MessageList;
+    @OneToMany(mappedBy = "chattingRoom", cascade = CascadeType.ALL)
+    private List<ChattingMessage> messageList = new ArrayList<>();
 }
