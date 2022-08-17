@@ -32,7 +32,7 @@ public class User {
     private List<ChattingRoom> chattingRoomList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<DiaryLike> diarylikeList = new ArrayList<>();
+    private List<DiaryLike> diaryLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Diary> diaryList = new ArrayList<>();
