@@ -15,13 +15,13 @@ public class DiaryController {
 
     private final DiaryRepository diaryRepository;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Diary>> getAllPosts() {
         List<Diary> posts = diaryRepository.findAll();
         return ResponseEntity.ok().body(posts);
     }
 
-    @PostMapping("")
+    @PostMapping
     public void createPost(@RequestBody DiaryDto diaryDto){
         // DiaryDto -> Diary 로직
         // diaryRepository.save();
@@ -31,12 +31,9 @@ public class DiaryController {
     @GetMapping("/{diaryId}")
     public ResponseEntity<Diary> readPost(@PathVariable Long diaryId) {
         Optional<Diary> diary = diaryRepository.findById(diaryId);
-        if(!diary.isPresent()){
+        if(!diary.isPresent())
             return ResponseEntity.notFound().build();
-        }
-        else{
-            return ResponseEntity.ok().body(diary.get());
-        }
+        return ResponseEntity.ok().body(diary.get());
     }
 
     @PatchMapping("/{diaryId}")
