@@ -15,13 +15,13 @@ public class DiaryController {
 
     private final DiaryRepository diaryRepository;
 
-    @GetMapping("")
+    @GetMapping
     public List<Diary> getAllPosts() {
         List<Diary> posts = diaryRepository.findAll();
         return posts;
     }
 
-    @PostMapping("")
+    @PostMapping
     public void createPost(@RequestBody DiaryDto diaryDto){
         // DiaryDto -> Diary 로직
         // diaryRepository.save();
