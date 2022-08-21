@@ -14,7 +14,7 @@ import java.util.List;
 public class CareProgramController {
     private final CareProgramRepository careProgramRepository;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<CareProgram>> getAllCareProgram(){
         List<CareProgram> programs = careProgramRepository.findAll();
         return ResponseEntity.ok().body(programs);
