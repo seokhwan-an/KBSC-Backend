@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/care-program/")
+@RequestMapping("/api/v1/care-program")
 @RestController
 public class CareProgramController {
     private final CareProgramRepository careProgramRepository;
