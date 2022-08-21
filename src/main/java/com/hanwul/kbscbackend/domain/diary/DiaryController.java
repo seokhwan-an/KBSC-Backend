@@ -16,9 +16,9 @@ public class DiaryController {
     private final DiaryRepository diaryRepository;
 
     @GetMapping
-    public List<Diary> getAllPosts() {
+    public ResponseEntity<List<Diary>> getAllPosts() {
         List<Diary> posts = diaryRepository.findAll();
-        return posts;
+        return ResponseEntity.ok().body(posts);
     }
 
     @PostMapping
@@ -29,9 +29,11 @@ public class DiaryController {
     }
 
     @GetMapping("/{diaryId}")
-    public Optional<Diary> readPost(@PathVariable Long diaryId) {
+    public ResponseEntity<Diary> readPost(@PathVariable Long diaryId) {
         Optional<Diary> diary = diaryRepository.findById(diaryId);
-        return diary;
+        if(!diary.isPresent())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(diary.get());
     }
 
     @PatchMapping("/{diaryId}")
