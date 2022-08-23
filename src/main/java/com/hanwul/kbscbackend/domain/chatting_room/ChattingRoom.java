@@ -1,7 +1,7 @@
 package com.hanwul.kbscbackend.domain.chatting_room;
 
 import com.hanwul.kbscbackend.domain.chattingmessage.ChattingMessage;
-import com.hanwul.kbscbackend.domain.user.User;
+import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,13 +20,13 @@ public class ChattingRoom {
 
     private String description;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "from_id")
-    private User constructor;
+    private Account constructor;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "to_id")
-    private User participant;
+    private Account participant;
 
     @OneToMany(mappedBy = "chattingRoom", cascade = CascadeType.ALL)
     private List<ChattingMessage> messageList = new ArrayList<>();

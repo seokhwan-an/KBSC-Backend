@@ -1,7 +1,7 @@
 package com.hanwul.kbscbackend.domain.diary;
 
 import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
-import com.hanwul.kbscbackend.domain.user.User;
+import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,7 +35,7 @@ public class Diary {
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<DiaryLike> diaryLikeList = new ArrayList<>();
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 }

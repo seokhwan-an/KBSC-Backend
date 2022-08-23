@@ -1,7 +1,7 @@
 package com.hanwul.kbscbackend.domain.diary;
 
 import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
-import com.hanwul.kbscbackend.domain.user.User;
+import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -26,6 +26,6 @@ public class DiaryDto {
 
     private List<DiaryLike> diaryLikeList = new ArrayList<>();
 
-    private User user;
+    private Account account;
 }
 
