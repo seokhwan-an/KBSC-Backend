@@ -2,9 +2,12 @@ package com.hanwul.kbscbackend.domain.diary;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +25,12 @@ public class DiaryController {
     }
 
     @PostMapping
-    public void createPost(@RequestBody DiaryDto diaryDto){
+    public ResponseEntity<?> createPost(@RequestBody DiaryDto diaryDto){
         // DiaryDto -> Diary 로직
         // diaryRepository.save();
-        // redirect readPost
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/v1/diary"));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     @GetMapping("/{diaryId}")
@@ -37,24 +42,30 @@ public class DiaryController {
     }
 
     @PatchMapping("/{diaryId}")
-    public void updatePost(@PathVariable Long diaryId, @RequestBody DiaryDto diaryDto){
+    public ResponseEntity<?> updatePost(@PathVariable Long diaryId, @RequestBody DiaryDto diaryDto){
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         // DiaryDto -> Diary update 로직
-        // redirect readPost
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/v1/diary/"+diaryId));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     @DeleteMapping("/{diaryId}")
-    public void deletePost(@PathVariable Long diaryId){
+    public ResponseEntity<?> deletePost(@PathVariable Long diaryId){
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         diaryRepository.delete(diary.get());
-        // redirect getAllPosts
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/v1/diary"));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     // 좋아요
     @GetMapping("/{diaryId}/like")
-    public void likePost(@PathVariable Long diaryId){
+    public ResponseEntity<?> likePost(@PathVariable Long diaryId){
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         // diary 좋아요 로직
-        // redirect readPost
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/api/v1/diary/"+diaryId));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 }
