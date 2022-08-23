@@ -1,12 +1,12 @@
 package com.hanwul.kbscbackend.domain.chatting_room;
 
-import com.hanwul.kbscbackend.domain.user.User;
+import com.hanwul.kbscbackend.domain.account.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 public interface ChattingRoomRepository extends JpaRepository<ChattingRoom, Long> {
-    Optional<User> findByConstructor(User user);
+    Optional<Account> findByConstructor(Account user);
 
-    Optional<User> findByParticipant(User user);
+    Optional<Account> findByParticipant(Account user);
 }

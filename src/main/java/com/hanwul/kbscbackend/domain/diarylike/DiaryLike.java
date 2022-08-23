@@ -1,7 +1,7 @@
 package com.hanwul.kbscbackend.domain.diarylike;
 
 import com.hanwul.kbscbackend.domain.diary.Diary;
-import com.hanwul.kbscbackend.domain.user.User;
+import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +16,9 @@ public class DiaryLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @ManyToOne(targetEntity = Diary.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")

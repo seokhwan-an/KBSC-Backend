@@ -20,7 +20,6 @@ public class SecurityConfig{
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
-    @Autowired
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable() // rest api -> 기본 설정 disable

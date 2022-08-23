@@ -1,12 +1,11 @@
 package com.hanwul.kbscbackend.domain.answer;
 
 import com.hanwul.kbscbackend.domain.question.Question;
-import com.hanwul.kbscbackend.domain.user.User;
+import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,9 +20,9 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     private String answer;
 }
