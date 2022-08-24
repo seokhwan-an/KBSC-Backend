@@ -2,9 +2,12 @@ package com.hanwul.kbscbackend.domain.diary;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +28,6 @@ public class DiaryController {
     public void createPost(@RequestBody DiaryDto diaryDto){
         // DiaryDto -> Diary 로직
         // diaryRepository.save();
-        // redirect readPost
     }
 
     @GetMapping("/{diaryId}")
@@ -36,18 +38,16 @@ public class DiaryController {
         return ResponseEntity.ok().body(diary.get());
     }
 
-    @PatchMapping("/{diaryId}")
+    @PutMapping("/{diaryId}")
     public void updatePost(@PathVariable Long diaryId, @RequestBody DiaryDto diaryDto){
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         // DiaryDto -> Diary update 로직
-        // redirect readPost
     }
 
     @DeleteMapping("/{diaryId}")
     public void deletePost(@PathVariable Long diaryId){
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         diaryRepository.delete(diary.get());
-        // redirect getAllPosts
     }
 
     // 좋아요
@@ -55,6 +55,5 @@ public class DiaryController {
     public void likePost(@PathVariable Long diaryId){
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         // diary 좋아요 로직
-        // redirect readPost
     }
 }
