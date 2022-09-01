@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    Optional<Answer> findByUser(Account user);
+    Optional<Answer> findByAccount(Account user);
 
     Optional<Question> findByQuestion(Question question);
 }
