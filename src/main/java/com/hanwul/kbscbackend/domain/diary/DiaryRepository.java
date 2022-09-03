@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Diary> findByStatus(Status status);
 
-    Optional<Diary> findByUser(Account account);
+    Optional<Diary> findByAccount(Account account);
 }
