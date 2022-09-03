@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    Optional<Answer> findByAccount(Account account);
-
+    Optional<Answer> findByAccount(Account user);
+    
     Optional<Question> findByQuestion(Question question);
 
     List<Answer> findByCreatedDateTimeBetween(LocalDateTime start, LocalDateTime end);
