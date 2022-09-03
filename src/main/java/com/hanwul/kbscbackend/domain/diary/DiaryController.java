@@ -1,7 +1,9 @@
 package com.hanwul.kbscbackend.domain.diary;
 
+import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,44 +18,37 @@ import java.util.Optional;
 @RestController
 public class DiaryController {
 
-    private final DiaryRepository diaryRepository;
+    private final DiaryService diaryService;
 
     @GetMapping
-    public ResponseEntity<List<Diary>> getAllPosts() {
-        List<Diary> posts = diaryRepository.findAll();
-        return ResponseEntity.ok().body(posts);
+    public BasicResponseDto<List<DiaryDto>> getAllPosts() {
+        return diaryService.getAllDiaryDtos();
     }
 
     @PostMapping
-    public void createPost(@RequestBody DiaryDto diaryDto){
-        // DiaryDto -> Diary 로직
-        // diaryRepository.save();
+    public BasicResponseDto<Long> createPost(@RequestBody DiaryDto diaryDto) {
+        return diaryService.create(diaryDto);
     }
 
     @GetMapping("/{diaryId}")
-    public ResponseEntity<Diary> readPost(@PathVariable Long diaryId) {
-        Optional<Diary> diary = diaryRepository.findById(diaryId);
-        if(!diary.isPresent())
-            return ResponseEntity.notFound().build();
-        return ResponseEntity.ok().body(diary.get());
+    public BasicResponseDto<DiaryDto> readPost(@PathVariable Long diaryId) {
+        return diaryService.read(diaryId);
     }
 
     @PutMapping("/{diaryId}")
-    public void updatePost(@PathVariable Long diaryId, @RequestBody DiaryDto diaryDto){
-        Optional<Diary> diary = diaryRepository.findById(diaryId);
-        // DiaryDto -> Diary update 로직
+    public BasicResponseDto<Long> updatePost(@PathVariable Long diaryId, @RequestBody DiaryDto diaryDto){
+        return diaryService.modify(diaryId, diaryDto);
     }
 
     @DeleteMapping("/{diaryId}")
-    public void deletePost(@PathVariable Long diaryId){
-        Optional<Diary> diary = diaryRepository.findById(diaryId);
-        diaryRepository.delete(diary.get());
+    public BasicResponseDto<Void> deletePost(@PathVariable Long diaryId){
+        return diaryService.delete(diaryId);
     }
 
     // 좋아요
     @GetMapping("/{diaryId}/like")
     public void likePost(@PathVariable Long diaryId){
-        Optional<Diary> diary = diaryRepository.findById(diaryId);
-        // diary 좋아요 로직
+//        Optional<Diary> diary = diaryRepository.findById(diaryId);
+//         diary 좋아요 로직
     }
 }

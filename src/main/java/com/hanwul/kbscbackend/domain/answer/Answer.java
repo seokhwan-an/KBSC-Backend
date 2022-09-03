@@ -1,17 +1,19 @@
 package com.hanwul.kbscbackend.domain.answer;
 
+import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.question.Question;
 import com.hanwul.kbscbackend.domain.account.Account;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "answer")
-public class Answer {
+@Builder
+@Entity
+public class Answer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,3 +28,6 @@ public class Answer {
 
     private String answer;
 }
+
+
+

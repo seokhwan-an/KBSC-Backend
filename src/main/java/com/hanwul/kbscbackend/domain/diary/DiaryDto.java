@@ -16,15 +16,9 @@ import java.util.List;
 public class DiaryDto {
     private Long id;
 
-    private String Content;
+    private String content;
 
     private Status status;
-
-    private LocalDateTime createdDateTime;
-
-    private LocalDateTime modifiedDateTime;
-
-    private List<DiaryLike> diaryLikeList = new ArrayList<>();
 
     private Account account;
 }
