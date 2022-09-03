@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.diary;
 
+import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
 import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
@@ -21,5 +22,9 @@ public class DiaryDto {
     private Status status;
 
     private Account account;
+
+    private LocalDateTime createdDateTime;
+
+    private LocalDateTime modifiedDateTime;
 }
 

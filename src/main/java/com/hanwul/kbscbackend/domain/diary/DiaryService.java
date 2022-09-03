@@ -67,6 +67,8 @@ public class DiaryService {
                 .id(diary.getId())
                 .content(diary.getContent())
                 .account(diary.getAccount())
+                .createdDateTime(diary.getCreatedDateTime())
+                .modifiedDateTime(diary.getModifiedDateTime())
                 .build();
     }
 
