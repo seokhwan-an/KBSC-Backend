@@ -1,14 +1,16 @@
 package com.hanwul.kbscbackend.domain.mission;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
 @Setter
 @Table(name="mission")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
 public class Mission {
 
     @Id
@@ -18,4 +20,10 @@ public class Mission {
     private String content;
 
     private String category;
+
+    private Boolean isPublic;
+
+    public void changeStatus(){
+        this.isPublic = !(this.isPublic);
+    }
 }
