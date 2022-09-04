@@ -24,9 +24,9 @@ public class MissionController {
         return service.changeStatus(missionId);
     }
 
-    @GetMapping("/{missionId}")
+    @GetMapping
     public void getHistory(){
-
+        // history
     }
 
 
