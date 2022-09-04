@@ -14,5 +14,5 @@ public class MissionDto {
 
     private String category;
 
-    private Boolean isPublic;
+    private Boolean isSuccess;
 }

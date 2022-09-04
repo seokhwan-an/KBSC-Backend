@@ -21,9 +21,9 @@ public class Mission {
 
     private String category;
 
-    private Boolean isPublic;
+    private Boolean isSuccess;
 
     public void changeStatus(){
-        this.isPublic = !(this.isPublic);
+        this.isSuccess = !(this.isSuccess);
     }
 }
