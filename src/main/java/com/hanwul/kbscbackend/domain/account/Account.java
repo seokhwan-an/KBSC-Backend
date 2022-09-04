@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.account;
 
+import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.chatting_room.ChattingRoom;
 import com.hanwul.kbscbackend.domain.diary.Diary;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter @Setter
+@NoArgsConstructor
 @Table(name = "account")
 @Entity
 public class Account implements UserDetails {
@@ -31,7 +33,6 @@ public class Account implements UserDetails {
     @Column(length = 45)
     private String username;
 
-    @Column(length = 45)
     private String password;
 
     @Column(length = 45)

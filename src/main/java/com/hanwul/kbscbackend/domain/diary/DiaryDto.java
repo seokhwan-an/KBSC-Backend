@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.diary;
 
+import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
 import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
@@ -16,16 +17,14 @@ import java.util.List;
 public class DiaryDto {
     private Long id;
 
-    private String Content;
+    private String content;
 
     private Status status;
+
+    private Account account;
 
     private LocalDateTime createdDateTime;
 
     private LocalDateTime modifiedDateTime;
-
-    private List<DiaryLike> diaryLikeList = new ArrayList<>();
-
-    private Account account;
 }
 
