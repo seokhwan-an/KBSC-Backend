@@ -19,8 +19,7 @@ public class MissionService {
     public BasicResponseDto<Long> changeStatus(Long missionId){
         Mission mission = repository.findById(missionId).get();
         mission.changeStatus();
-        Mission save = repository.save(mission);
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "mission", save.getId());
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "mission", mission.getId());
     }
 
     public void getRandom(String category){
@@ -43,8 +42,8 @@ public class MissionService {
         return MissionDto.builder()
                 .id(mission.getId())
                 .content(mission.getContent())
-                .isPublic(mission.getIsPublic())
-                .category(mission.getCategory())
+                .isSuccess(mission.getIsSuccess())
+                .category(mission.getCategory().getContent())
                 .build();
     }
 
@@ -52,8 +51,7 @@ public class MissionService {
         return Mission.builder()
                 .id(dto.getId())
                 .content(dto.getContent())
-                .isPublic(dto.getIsPublic())
-                .category(dto.getCategory())
+                .isSuccess(dto.getIsSuccess())
                 .build();
     }
 }

@@ -1,11 +1,11 @@
 package com.hanwul.kbscbackend.domain.mission;
 
+import com.hanwul.kbscbackend.domain.category.Category;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Table(name="mission")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,11 +19,12 @@ public class Mission {
 
     private String content;
 
-    private String category;
+    private Boolean isSuccess;
 
-    private Boolean isPublic;
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Category category;
 
     public void changeStatus(){
-        this.isPublic = !(this.isPublic);
+        this.isSuccess = !(this.isSuccess);
     }
 }
