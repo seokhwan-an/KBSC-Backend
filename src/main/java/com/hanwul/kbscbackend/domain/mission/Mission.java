@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Table(name="mission")
 @NoArgsConstructor
 @AllArgsConstructor

@@ -19,8 +19,7 @@ public class MissionService {
     public BasicResponseDto<Long> changeStatus(Long missionId){
         Mission mission = repository.findById(missionId).get();
         mission.changeStatus();
-        Mission save = repository.save(mission);
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "mission", save.getId());
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "mission", mission.getId());
     }
 
     public void getRandom(String category){

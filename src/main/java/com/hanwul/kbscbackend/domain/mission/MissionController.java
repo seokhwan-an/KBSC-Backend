@@ -14,7 +14,7 @@ public class MissionController {
 
     private final MissionService service;
 
-    @PostMapping
+    @GetMapping
     public BasicResponseDto<List<MissionDto>> getRandomMission(@RequestParam("categories") List<String> categories){
         return service.get(categories);
     }
