@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.mission;
 
+import com.hanwul.kbscbackend.domain.category.Category;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,9 +19,10 @@ public class Mission {
 
     private String content;
 
-    private String category;
-
     private Boolean isSuccess;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Category category;
 
     public void changeStatus(){
         this.isSuccess = !(this.isSuccess);

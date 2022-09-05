@@ -43,7 +43,7 @@ public class MissionService {
                 .id(mission.getId())
                 .content(mission.getContent())
                 .isSuccess(mission.getIsSuccess())
-                .category(mission.getCategory())
+                .category(mission.getCategory().getContent())
                 .build();
     }
 
@@ -52,7 +52,6 @@ public class MissionService {
                 .id(dto.getId())
                 .content(dto.getContent())
                 .isSuccess(dto.getIsSuccess())
-                .category(dto.getCategory())
                 .build();
     }
 }
