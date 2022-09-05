@@ -44,7 +44,6 @@ public class DiaryService {
         Diary diary = byId.get();
         diary.changeContent(diaryDto.getContent());
         diary.changeStatus(diaryDto.getStatus());
-        diaryRepository.save(diary);
         DiaryDto diaryDto1 = entityToDto(diary);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "diary", diaryDto1.getId());
     }
