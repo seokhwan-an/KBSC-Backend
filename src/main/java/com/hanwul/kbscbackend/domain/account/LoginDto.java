@@ -1,27 +1,24 @@
 package com.hanwul.kbscbackend.domain.account;
 
-
-
-import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
 @Data
-public class SignUpDto {
+public class LoginDto {
     @NotBlank
     private String username;
     @NotBlank
     private String password;
-    @NotBlank
-    private String nickname;
 
     @Builder
-    public SignUpDto(String username, String password, String nickname){
+    public LoginDto(String username, String password){
         this.username = username;
         this.password = password;
-        this.nickname = nickname;
     }
 }

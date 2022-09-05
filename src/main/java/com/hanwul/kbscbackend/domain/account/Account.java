@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter @Setter
-@NoArgsConstructor
 @Table(name = "account")
 @Entity
 public class Account implements UserDetails {
