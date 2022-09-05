@@ -1,13 +1,9 @@
 package com.hanwul.kbscbackend.domain.diary;
 
-import com.hanwul.kbscbackend.common.BaseEntity;
-import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
 import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @ToString
