@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +48,7 @@ public class DiaryController {
 
     // 좋아요
     @GetMapping("/{diaryId}/like")
-    public void likePost(@PathVariable Long diaryId){
-//        Optional<Diary> diary = diaryRepository.findById(diaryId);
-//         diary 좋아요 로직
+    public BasicResponseDto<Void> likePost(@PathVariable Long diaryId, Principal principal){
+        return diaryService.like(diaryId, principal);
     }
 }

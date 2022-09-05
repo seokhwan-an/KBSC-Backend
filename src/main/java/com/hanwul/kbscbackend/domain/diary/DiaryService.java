@@ -1,13 +1,18 @@
 package com.hanwul.kbscbackend.domain.diary;
 
 
+import com.hanwul.kbscbackend.domain.account.Account;
+import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Basic;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,6 +23,8 @@ import java.util.stream.Collectors;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final DiaryLikeRepository diaryLikeRepository;
+    private final AccountRepository accountRepository;
 
     public BasicResponseDto<DiaryDto> read(Long diaryId) {
         Optional<Diary> result = diaryRepository.findById(diaryId);
@@ -36,6 +43,7 @@ public class DiaryService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "diary", diary.getId());
     }
 
+    @Transactional
     public BasicResponseDto<Long> modify(Long diaryId, DiaryDto diaryDto) {
         Optional<Diary> byId = diaryRepository.findById(diaryId);
         if(byId.isEmpty()){
@@ -77,6 +85,27 @@ public class DiaryService {
         List<DiaryDto> diaryDtos = diaries.stream().map(diary -> entityToDto(diary))
                 .collect(Collectors.toList());
         return new BasicResponseDto<>(HttpStatus.OK.value(), "diary", diaryDtos);
+    }
+
+    @Transactional
+    public BasicResponseDto<Void> like(Long diaryId, Principal principal){
+        Account account = accountRepository.findByUsername(principal.getName()).get();
+        Diary diary = diaryRepository.findById(diaryId).get();
+        Optional<DiaryLike> byAccountAndDiary = diaryLikeRepository.findByAccountAndDiary(account, diary);
+        byAccountAndDiary.ifPresentOrElse(
+                diaryLike -> {
+                    diaryLikeRepository.delete(diaryLike);
+                    diary.discountLike(diaryLike);
+                    diary.updateLikeCount();
+                },
+                () -> {
+                    DiaryLike diaryLike = DiaryLike.builder().account(account).diary(diary).build();
+                    diary.mappingLike(diaryLike);
+                    diary.updateLikeCount();
+                    diaryLikeRepository.save(diaryLike);
+                }
+        );
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "diary", null);
     }
 
 
