@@ -2,11 +2,10 @@ package com.hanwul.kbscbackend.domain.account;
 
 import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.chatting_room.ChattingRoom;
-import com.hanwul.kbscbackend.domain.diary.Diary;
-import com.hanwul.kbscbackend.domain.diary.DiaryLike;
+import com.hanwul.kbscbackend.domain.emotion.Emotion;
+import com.hanwul.kbscbackend.domain.emotion.EmotionLike;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,10 +38,10 @@ public class Account implements UserDetails {
     private List<ChattingRoom> chattingRoomList = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<DiaryLike> diaryLikeList = new ArrayList<>();
+    private List<EmotionLike> emotionLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Diary> diaryList = new ArrayList<>();
+    private List<Emotion> emotionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Answer> answerList = new ArrayList<>() ;

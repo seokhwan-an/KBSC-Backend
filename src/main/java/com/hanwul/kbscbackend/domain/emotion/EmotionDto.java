@@ -1,6 +1,5 @@
-package com.hanwul.kbscbackend.domain.diary;
+package com.hanwul.kbscbackend.domain.emotion;
 
-import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,14 +9,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiaryDto {
+public class EmotionDto {
     private Long id;
 
     private String content;
 
     private Status status;
 
-    private Account account;
+    private Long count;
 
     private LocalDateTime createdDateTime;
 
