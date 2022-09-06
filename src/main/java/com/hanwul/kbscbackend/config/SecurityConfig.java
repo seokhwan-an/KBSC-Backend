@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CorsFilter corsFilter;
@@ -41,7 +41,7 @@ public class SecurityConfig{
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/user/login", "/api/v1/user/sign-up").permitAll() // 가입, 로그인에 대한 권한 해제
+                .antMatchers("/api/v1/user/login", "/api/v1/user/sign-up", "/").permitAll() // 회원가입, 로그인, 메인페이지에 대한 권한 해제
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
