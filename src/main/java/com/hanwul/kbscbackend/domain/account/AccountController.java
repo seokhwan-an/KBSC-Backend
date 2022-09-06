@@ -3,6 +3,7 @@ package com.hanwul.kbscbackend.domain.account;
 import com.hanwul.kbscbackend.domain.security.CustomUserDetailService;
 import com.hanwul.kbscbackend.domain.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,13 @@ public class AccountController {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountService accountService;
 
+    @Transactional
     @PostMapping("/sign-up")
     public Account join(@Valid @RequestBody SignUpDto signUpDto) {
         return accountService.save(signUpDto);
     }
 
+    @Transactional
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginDto loginDto) {
         boolean authenciate = accountService.check(loginDto);

@@ -6,9 +6,9 @@ import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.answer.AnswerRepository;
 import com.hanwul.kbscbackend.domain.category.Category;
 import com.hanwul.kbscbackend.domain.category.CategoryRepository;
-import com.hanwul.kbscbackend.domain.diary.Diary;
-import com.hanwul.kbscbackend.domain.diary.DiaryRepository;
-import com.hanwul.kbscbackend.domain.diary.Status;
+import com.hanwul.kbscbackend.domain.emotion.Emotion;
+import com.hanwul.kbscbackend.domain.emotion.EmotionRepository;
+import com.hanwul.kbscbackend.domain.emotion.Status;
 import com.hanwul.kbscbackend.domain.mission.Mission;
 import com.hanwul.kbscbackend.domain.mission.MissionRepository;
 import com.hanwul.kbscbackend.domain.question.Question;
@@ -16,12 +16,10 @@ import com.hanwul.kbscbackend.domain.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 //import java.util.stream.IntStream;
 
 @Slf4j
@@ -35,7 +33,7 @@ public class DataInit {
     private final PasswordEncoder passwordEncoder;
     private final CategoryRepository categoryRepository;
     private final MissionRepository missionRepository;
-    private final DiaryRepository diaryRepository;
+    private final EmotionRepository emotionRepository;
 
     @PostConstruct
     void init() {
@@ -85,11 +83,11 @@ public class DataInit {
 
         Account account = accountRepository.findAll().stream().findFirst().get();
 
-        List<Diary> diaryList = new ArrayList<>();
-        diaryList.add(Diary.builder().content("감정1").account(account).status(Status.ACTIVE).build());
-        diaryList.add(Diary.builder().content("감정2").account(account).status(Status.ACTIVE).build());
-        diaryList.add(Diary.builder().content("감정3").account(account).status(Status.ACTIVE).build());
-        diaryList.add(Diary.builder().content("감정4").account(account).status(Status.INACTIVE).build());
-        diaryRepository.saveAll(diaryList);
+        List<Emotion> emotionList = new ArrayList<>();
+        emotionList.add(Emotion.builder().content("감정1").account(account).status(Status.PUBLIC).build());
+        emotionList.add(Emotion.builder().content("감정2").account(account).status(Status.PUBLIC).build());
+        emotionList.add(Emotion.builder().content("감정3").account(account).status(Status.PUBLIC).build());
+        emotionList.add(Emotion.builder().content("감정4").account(account).status(Status.PRIVATE).build());
+        emotionRepository.saveAll(emotionList);
     }
 }

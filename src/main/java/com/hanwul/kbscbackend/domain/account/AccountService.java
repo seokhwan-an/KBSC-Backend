@@ -23,6 +23,7 @@ public class AccountService {
     }
 
     // 로그인
+    @Transactional
     public boolean check(LoginDto loginDto) {
         // 입력받은 password
         String password = loginDto.getPassword();
