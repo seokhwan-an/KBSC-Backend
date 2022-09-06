@@ -19,22 +19,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter @Setter
-@NoArgsConstructor
 @Table(name = "account")
 @Entity
 public class Account implements UserDetails {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 45)
+    @Column(length = 45, unique = true)
     private String username;
 
     private String password;
 
-    @Column(length = 45)
+    @Column(length = 45, unique = true)
     private String nickname;
 
     @OneToMany(mappedBy = "constructor", cascade = CascadeType.ALL)

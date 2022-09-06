@@ -24,4 +24,5 @@ public class MissionController {
     public BasicResponseDto<Long> changeStatus(@PathVariable Long missionId){
         return service.changeStatus(missionId);
     }
+
 }
