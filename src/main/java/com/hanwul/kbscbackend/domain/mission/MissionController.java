@@ -24,10 +24,6 @@ public class MissionController {
         return service.changeStatus(missionId);
     }
 
-//    @GetMapping
-//    public void getHistory(){
-//         history
-//    }
 
 
 }
