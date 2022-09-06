@@ -25,10 +25,7 @@ public class AccountController {
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginDto loginDto) {
-        boolean authenciate = accountService.check(loginDto);
-        if (authenciate) {
-            return jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.getRoles());
-        }
-        return "error";
+        accountService.check(loginDto);
+        return jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.getRoles());
     }
 }
