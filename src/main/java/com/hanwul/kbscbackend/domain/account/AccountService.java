@@ -18,18 +18,23 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     //회원 가입
-    public Account save(SignUpDto signUpDto){
+    public Account save(SignUpDto signUpDto) {
         return accountRepository.save(toEntity(signUpDto));
     }
 
-    //로그인
-    public Account load(LoginDto loginDto){
+    // 로그인
+    public boolean check(LoginDto loginDto) {
+        // 입력받은 password
+        String password = loginDto.getPassword();
         Account member = accountRepository.findByUsername(loginDto.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
-        return member;
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 Username 입니다."));
+        if (passwordEncoder.matches(password, member.getPassword())) {
+            return true;
+        }
+        return false;
     }
 
-    public Account toEntity(SignUpDto signUpDto){
+    public Account toEntity(SignUpDto signUpDto) {
         return Account.builder()
                 .username(signUpDto.getUsername())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))

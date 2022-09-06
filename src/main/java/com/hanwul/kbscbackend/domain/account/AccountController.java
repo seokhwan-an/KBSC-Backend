@@ -17,16 +17,18 @@ import java.util.Map;
 public class AccountController {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountService accountService;
-    private final CustomUserDetailService customUserDetailService;
 
     @PostMapping("/sign-up")
-    public Account join(@Valid @RequestBody SignUpDto signUpDto){
+    public Account join(@Valid @RequestBody SignUpDto signUpDto) {
         return accountService.save(signUpDto);
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginDto loginDto){
-        Account account = accountService.load(loginDto);
-        return jwtTokenProvider.createToken(account.getUsername(), account.getRoles());
+    public String login(@Valid @RequestBody LoginDto loginDto) {
+        boolean authenciate = accountService.check(loginDto);
+        if (authenciate) {
+            return jwtTokenProvider.createToken(loginDto.getUsername(), loginDto.getRoles());
+        }
+        return "error";
     }
 }
