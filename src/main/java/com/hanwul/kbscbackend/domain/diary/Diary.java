@@ -1,14 +1,10 @@
 package com.hanwul.kbscbackend.domain.diary;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
-import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
 import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +22,8 @@ public class Diary extends BaseEntity {
 
     private String content;
 
+    private Long likeCount;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -35,6 +33,19 @@ public class Diary extends BaseEntity {
     @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public void discountLike(DiaryLike diaryLike){
+        this.diaryLikeList.remove(diaryLike);
+
+    }
+
+    public void mappingLike(DiaryLike diaryLike){
+        this.diaryLikeList.add(diaryLike);
+    }
+
+    public void updateLikeCount(){
+        this.likeCount = (long)this.diaryLikeList.size();
+    }
 
     public void changeStatus(Status status){
         this.status = status;

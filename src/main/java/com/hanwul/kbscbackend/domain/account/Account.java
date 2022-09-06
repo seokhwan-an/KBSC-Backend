@@ -1,10 +1,9 @@
 package com.hanwul.kbscbackend.domain.account;
 
-import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.chatting_room.ChattingRoom;
 import com.hanwul.kbscbackend.domain.diary.Diary;
-import com.hanwul.kbscbackend.domain.diarylike.DiaryLike;
+import com.hanwul.kbscbackend.domain.diary.DiaryLike;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
