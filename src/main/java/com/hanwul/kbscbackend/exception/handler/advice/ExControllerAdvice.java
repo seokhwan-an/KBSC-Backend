@@ -25,4 +25,11 @@ public class ExControllerAdvice {
     public ErrorResult wrongInputExHandler(WrongInputException e) {
         return new ErrorResult(ExceptionCode.WRONG_INPUT);
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorResult notFoundExHandler(IllegalArgumentException e) {
+        return new ErrorResult(ExceptionCode.NOT_FOUND_USER);
+    }
+
 }
