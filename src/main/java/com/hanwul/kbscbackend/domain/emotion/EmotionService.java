@@ -101,6 +101,7 @@ public class EmotionService {
                 .id(emotion.getId())
                 .content(emotion.getContent())
                 .count(emotion.getCount())
+                .status(emotion.getStatus())
                 .createdDateTime(emotion.getCreatedDateTime())
                 .modifiedDateTime(emotion.getModifiedDateTime())
                 .build();
