@@ -1,8 +1,6 @@
 package com.hanwul.kbscbackend.exception.handler.advice;
 
-import com.hanwul.kbscbackend.exception.ExceptionCode;
-import com.hanwul.kbscbackend.exception.UserException;
-import com.hanwul.kbscbackend.exception.WrongInputException;
+import com.hanwul.kbscbackend.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,24 @@ public class ExControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult notFoundExHandler(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.NOT_FOUND_USER);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongEmotionId.class)
+    public ErrorResult wrongEmotionId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.NOT_FOUND_EMOTION);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongMatchEmotion.class)
+    public ErrorResult wrongMatchEmotion(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_MATCH_EMOTION);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongEmotionType.class)
+    public ErrorResult wrongEmotionType(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_EMOTION_TYPE);
     }
 
 }
