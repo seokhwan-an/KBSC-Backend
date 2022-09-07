@@ -5,6 +5,9 @@ import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.dto.EmotionSearchDto;
+import com.hanwul.kbscbackend.exception.WrongEmotionId;
+import com.hanwul.kbscbackend.exception.WrongEmotionType;
+import com.hanwul.kbscbackend.exception.WrongMatchEmotion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -33,9 +36,8 @@ public class EmotionService {
     public BasicResponseDto<EmotionDto> read(Long emotionId) {
         Optional<Emotion> result = emotionRepository.findById(emotionId);
         if (result.isEmpty()){
-            throw new IllegalArgumentException("같은 id의 Emotion 객체 없음");
+            throw new WrongEmotionId();
         }
-
         Emotion emotion = result.get();
         EmotionDto emotionDto = entityToDto(emotion);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", emotionDto);
@@ -55,11 +57,11 @@ public class EmotionService {
         Account request_account = get_account(principal);
         Optional<Emotion> byId = emotionRepository.findById(emotionID);
         if(byId.isEmpty()){
-            throw new IllegalArgumentException("같은 id의 Emotion 객체 없음");
+            throw new WrongEmotionId();
         }
         Emotion emotion = byId.get();
         if(emotion.getAccount().getId() != request_account.getId()){
-            throw new IllegalArgumentException("본인이 작성한 게시글이 아님");
+            throw new WrongMatchEmotion();
         }
         emotion.changeContent(emotionDto.getContent());
         emotion.changeStatus(emotionDto.getStatus());
@@ -76,11 +78,11 @@ public class EmotionService {
         Account account = get_account(principal);
         Optional<Emotion> byId = emotionRepository.findById(id);
         if(byId.isEmpty()){
-            throw new IllegalArgumentException("같은 id의 Emotion 객체 없음");
+            throw new WrongEmotionId();
         }
         Emotion emotion = byId.get();
         if(emotion.getAccount().getId() != account.getId()){
-            throw new IllegalArgumentException("본인이 작성한 게시글이 아님");
+            throw new WrongMatchEmotion();
         }
         emotionRepository.deleteById(id);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", null);
@@ -119,7 +121,7 @@ public class EmotionService {
             result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
        }
         else {
-            throw new IllegalArgumentException("타입 일치 안함");
+            throw new WrongEmotionType();
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
@@ -127,12 +129,16 @@ public class EmotionService {
     }
 
     // like 많이 받은 순 세 개
-
     @Transactional
     public BasicResponseDto<Void> like(Long emotionId, Principal principal){
         Account account = get_account(principal);
-        Emotion emotion = emotionRepository.findById(emotionId).get();
+        Optional<Emotion> byId = emotionRepository.findById(emotionId);
 
+        if(byId.isEmpty()){
+            throw new WrongEmotionId();
+        }
+
+        Emotion emotion = byId.get();
         Optional<EmotionLike> byAccountAndEmotion = emotionLikeRepository.findByAccountAndEmotion(account, emotion);
         byAccountAndEmotion.ifPresentOrElse(
                 emotionLike -> {
@@ -151,10 +157,9 @@ public class EmotionService {
     public BasicResponseDto<List<EmotionDto>> getTopLikes() {
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-//        List<EmotionLike> result = emotionLikeRepository.findAllByCreatedDateTimeBetween(start, end);
+        // List<EmotionLike> result = emotionLikeRepository.findAllByCreatedDateTimeBetween(start, end);
         List<EmotionLike> result = emotionLikeRepository.findLikeTopSevenDays(start, end);
 
-        log.info("getTopLikes {}", result);
         List<EmotionDto> list = result.stream().limit(3).map(emotionLike -> {
             Emotion emotion = emotionLike.getEmotion();
             return entityToDto(emotion);
