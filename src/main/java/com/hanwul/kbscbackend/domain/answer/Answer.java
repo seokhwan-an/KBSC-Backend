@@ -27,6 +27,10 @@ public class Answer extends BaseEntity {
     private Account account;
 
     private String answer;
+
+    public void changeAnswer(String answer){
+        this.answer = answer;
+    }
 }
 
 

@@ -35,7 +35,6 @@ public class EmotionService {
         if (result.isEmpty()){
             throw new IllegalArgumentException("같은 id의 Emotion 객체 없음");
         }
-
         Emotion emotion = result.get();
         EmotionDto emotionDto = entityToDto(emotion);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", emotionDto);
@@ -127,7 +126,6 @@ public class EmotionService {
     }
 
     // like 많이 받은 순 세 개
-
     @Transactional
     public BasicResponseDto<Void> like(Long emotionId, Principal principal){
         Account account = get_account(principal);
