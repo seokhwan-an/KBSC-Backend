@@ -1,18 +1,14 @@
 package com.hanwul.kbscbackend.domain.mission;
 
-import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
-import com.hanwul.kbscbackend.domain.mission.category.Category;
-import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccount;
+import com.hanwul.kbscbackend.domain.mission.category.CategoryResponseDto;
+import com.hanwul.kbscbackend.domain.mission.category.CategoryToggleDto;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountService;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,16 +16,29 @@ import java.util.List;
 @RestController
 public class MissionController {
 
-    private final MissionRepository missionRepository;
     private final MissionService missionService;
+    private final MissionRepository missionRepository;
     private final CategoryAccountService categoryAccountService;
     private final CategoryAccountRepository categoryAccountRepository;
     private final AccountRepository accountRepository;
 
+
+    @GetMapping("/categories")
+    public BasicResponseDto<List<CategoryResponseDto>> getCategories() {
+        return missionService.getCategories();
+    }
+
+    @PutMapping("/categories/{categoryId}")
+    public BasicResponseDto<CategoryToggleDto> toggleCategory(@PathVariable Long categoryId) {
+        return missionService.toggleCategory(categoryId);
+    }
+
+    // 카테고리와 미션들 갖고오기
     @GetMapping
-    public BasicResponseDto<List<MissionDto>> getRandomMission() {
-        List<MissionDto> missionDtos = categoryAccountService.missions();
-        return new BasicResponseDto<>(200, "Mission", missionDtos);
+    public BasicResponseDto<List<MissionResponseDto>> getMissions() {
+        return null;
+//        List<MissionDto> missionDtos = categoryAccountService.missions();
+//        return new BasicResponseDto<>(200, "Mission", missionDtos);
     }
 //
 //    @PutMapping("/{missionId}")

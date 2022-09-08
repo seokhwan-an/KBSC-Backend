@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.mission.category;
 
+import com.hanwul.kbscbackend.domain.mission.MissionCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

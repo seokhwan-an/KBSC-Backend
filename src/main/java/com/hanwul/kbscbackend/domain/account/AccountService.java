@@ -1,5 +1,9 @@
 package com.hanwul.kbscbackend.domain.account;
 
+import com.hanwul.kbscbackend.domain.mission.Mission;
+import com.hanwul.kbscbackend.domain.mission.MissionRepository;
+import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccount;
+import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountRepository;
 import com.hanwul.kbscbackend.domain.security.JwtTokenProvider;
 import com.hanwul.kbscbackend.exception.UserException;
 import com.hanwul.kbscbackend.exception.WrongInputException;
@@ -15,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.Option;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,17 +30,29 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final MissionAccountRepository missionAccountRepository;
+    private final MissionRepository missionRepository;
 
     //회원 가입
     @Transactional
     public Account save(SignUpDto signUpDto) {
         String username = signUpDto.getUsername();
-        Optional<Account> account = accountRepository.findByUsername(username);
-        if(account.isPresent()){
+        Optional<Account> result = accountRepository.findByUsername(username);
+        if(result.isPresent()){
             throw new UserException();
         }
-        return accountRepository.save(toEntity(signUpDto));
+        Account account = accountRepository.save(toEntity(signUpDto));
+        List<Mission> missions = missionRepository.findAll();
+        missions.forEach(mission -> {
+            MissionAccount build = MissionAccount.builder()
+                    .account(account)
+                    .mission(mission)
+                    .build();
+            missionAccountRepository.save(build);
+        });
+
+        log.info("{}", signUpDto);
+        return account;
     }
 
     // 로그인

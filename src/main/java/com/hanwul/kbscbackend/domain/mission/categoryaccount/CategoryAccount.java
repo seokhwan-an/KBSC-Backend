@@ -23,12 +23,9 @@ public class CategoryAccount {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    private boolean isCheck;
-
     @Builder
-    public CategoryAccount(Account account, Category category, boolean isCheck) {
+    public CategoryAccount(Account account, Category category) {
         this.account = account;
         this.category = category;
-        this.isCheck = isCheck;
     }
 }

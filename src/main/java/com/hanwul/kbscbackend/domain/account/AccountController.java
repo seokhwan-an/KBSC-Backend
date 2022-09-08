@@ -19,13 +19,11 @@ public class AccountController {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountService accountService;
 
-    @Transactional
     @PostMapping("/sign-up")
     public Account join(@Valid @RequestBody SignUpDto signUpDto) {
         return accountService.save(signUpDto);
     }
 
-    @Transactional
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginDto loginDto) {
         accountService.check(loginDto);

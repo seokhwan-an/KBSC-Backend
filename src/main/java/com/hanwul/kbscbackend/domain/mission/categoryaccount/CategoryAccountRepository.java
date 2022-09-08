@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryAccountRepository extends JpaRepository<CategoryAccount, Long> {
+
     Optional<CategoryAccount> findByAccountAndCategory(Account account, Category category);
+
     List<CategoryAccount> findByAccount(Account account);
+
+    void deleteByAccountAndCategory(Account account, Category category);
 }

@@ -2,10 +2,8 @@ package com.hanwul.kbscbackend.domain.mission.categoryaccount;
 
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
-import com.hanwul.kbscbackend.domain.mission.MissionDto;
 import com.hanwul.kbscbackend.domain.mission.MissionService;
 import com.hanwul.kbscbackend.domain.mission.category.Category;
-import com.hanwul.kbscbackend.domain.mission.Mission;
 import com.hanwul.kbscbackend.domain.mission.MissionRepository;
 import com.hanwul.kbscbackend.domain.mission.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -33,7 +30,7 @@ public class CategoryAccountService {
     }
 
     // 랜덤 추출하기
-    public List<MissionDto> missions() {
+//    public List<MissionDto> missions() {
 //        Account account = accountRepository.findByUsername(principal.getName()).get();
 //        List<CategoryAccount> categories = categoryAccountRepository.findByAccount(account);
 //        List<MissionDto> result = new ArrayList<>();
@@ -44,9 +41,8 @@ public class CategoryAccountService {
 //                result.add(missionService.entityToDto(mission));
 //            }
 //        }
-        List<Mission> insomnia = missionRepository.findByCategory(categoryRepository.findById())
-        List<>
-    }
+//        List<Mission> insomnia = missionRepository.findByCategory(categoryRepository.findById())
+//    }
 
     //카테고리 버튼 클릭시
     public void toggle(Principal principal, Category category) {
@@ -62,7 +58,7 @@ public class CategoryAccountService {
                     CategoryAccount categoryAccount = CategoryAccount.builder()
                             .account(accountRepository.findById(user.getId()).get())
                             .category(categoryRepository.findById(category.getId()).get())
-                            .isCheck(true)
+//                            .isCheck(true)
                             .build();
                     categoryAccountRepository.save(categoryAccount);
                 }

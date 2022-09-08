@@ -16,6 +16,4 @@ public class CategoryAccountDto {
     private Account account;
 
     private Category category;
-
-    private boolean isCheck;
 }
