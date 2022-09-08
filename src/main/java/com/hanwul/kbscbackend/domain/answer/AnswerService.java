@@ -31,17 +31,17 @@ public class AnswerService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public BasicResponseDto<Long> create(AnswerDto answerDto, Principal principal) {
+    public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
+        Optional<Question> byId = questionRepository.findById(questionId);
+        if(byId.isEmpty()){
+            throw new IllegalArgumentException("해당 question 없음");
+        }
+        Question question = byId.get();
+        answerDto.setQuestion(question.getContent());
         Answer answer = dtoToEntity(answerDto, account);
         answerRepository.save(answer);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", answer.getId());
-    }
-
-    public BasicResponseDto<List<AnswerDto>> findAnswerList() {
-        List<Answer> result = answerRepository.findAll();
-        List<AnswerDto> answerDtos = getDtoList(result);
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", answerDtos);
     }
 
 
@@ -74,7 +74,7 @@ public class AnswerService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", resultDtos);
     }
 
-    // 답변 이미 완료했는지 확인하는 서비스
+    // 답변 이미 완료했는지 확인 -> 필요 로직인지 판단 필요
     public boolean isAlreadyAnswered(Long questionId, Principal principal, String date) {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         LocalDateTime start = localDate.atStartOfDay();
@@ -153,7 +153,6 @@ public class AnswerService {
         return AnswerDto.builder()
                 .id(answer.getId())
                 .question(answer.getQuestion().getContent())
-                .account(answer.getAccount())
                 .answer(answer.getAnswer())
                 .build();
     }
