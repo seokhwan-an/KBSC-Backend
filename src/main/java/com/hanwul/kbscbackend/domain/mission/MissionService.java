@@ -1,49 +1,60 @@
 package com.hanwul.kbscbackend.domain.mission;
 
-import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class MissionService {
+
     private final MissionRepository repository;
 
-    public BasicResponseDto<Long> changeStatus(Long missionId){
-        Mission mission = repository.findById(missionId).get();
-        mission.changeStatus();
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "mission", mission.getId());
+    // create
+    public Mission create(MissionDto missionDto){
+        Mission mission = dtoToEntity(missionDto);
+        return repository.save(mission);
     }
 
-    public void getRandom(String category){
-        //category 값이 일치하는 값 랜덤으로 하나 추출
-
-    }
-
-    public BasicResponseDto<List<MissionDto>> get(List<String> categories){
-        // 각 카테고리 별로 랜덤으로 하나씩 뽑아서
-        ArrayList<MissionDto> dtos = new ArrayList<>();
-        for (String category : categories) {
-            getRandom(category);
-            // 나온 값 Dto로 변환하고
-            // 리스트에 넣고
+    // read
+    public Mission read(Long id){
+        Optional<Mission> mission = repository.findById(id);
+        if(!mission.isPresent()){
+            throw new IllegalStateException("해당 미션은 존재하지 않습니다.");
         }
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "mission", dtos);
+        return  mission.get();
     }
+
+    // update
+    @Transactional
+    public Optional<Mission> update(Long id, MissionDto missionDto){
+        Optional<Mission> mission = repository.findById(id);
+        if(!mission.isPresent()){
+            throw new IllegalStateException("해당 미션은 존재하지 않습니다.");
+        }
+        mission = Optional.ofNullable(dtoToEntity(missionDto));
+        return mission;
+    }
+
+    //delete
+    public void delete(Long id){
+        Optional<Mission> mission = repository.findById(id);
+        if(!mission.isPresent()){
+            throw new IllegalStateException("해당 미션은 존재하지 않습니다.");
+        }
+        repository.delete(mission.get());
+    }
+
 
     public MissionDto entityToDto(Mission mission){
         return MissionDto.builder()
                 .id(mission.getId())
                 .content(mission.getContent())
                 .isSuccess(mission.getIsSuccess())
-                .category(mission.getCategory().getContent())
                 .build();
     }
 
