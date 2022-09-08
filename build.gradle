@@ -29,6 +29,12 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Use ConfigurationProperties
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    //aws s3
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'
+    // 목업 객체 이용 위한
+    implementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
 tasks.named('test') {
