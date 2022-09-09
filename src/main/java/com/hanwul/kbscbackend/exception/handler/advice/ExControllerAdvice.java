@@ -1,8 +1,7 @@
 package com.hanwul.kbscbackend.exception.handler.advice;
 
-import com.hanwul.kbscbackend.exception.ExceptionCode;
-import com.hanwul.kbscbackend.exception.UserException;
-import com.hanwul.kbscbackend.exception.WrongInputException;
+import akka.http.javadsl.Http;
+import com.hanwul.kbscbackend.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -30,6 +29,24 @@ public class ExControllerAdvice {
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResult notFoundExHandler(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.NOT_FOUND_USER);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongQuestionId.class)
+    public ErrorResult wrongQuestionId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_QUESTION_ID);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongAnswerId.class)
+    public ErrorResult wrongAnswerId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_ANSWER_ID);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotMyAnswer.class)
+    public ErrorResult notMyAnswer(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);
     }
 
 }

@@ -3,7 +3,10 @@ package com.hanwul.kbscbackend.domain.answer;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,13 +24,21 @@ public class AnswerController {
         return answerService.create(questionId, answerDto, principal);
     }
 
+//    @PostMapping("/30")
+//    public BasicResponseDto<String> saveVideo(@RequestPart MultipartFile file,Principal principal){
+//        return answerService.saveVideo(file, principal);
+//    }
+
     @GetMapping("/{answerId}")
     public BasicResponseDto<AnswerDto> findAnswer(@PathVariable Long answerId) {
         return answerService.findAnswer(answerId);
     }
 
     @GetMapping("/{questionId}/{date}")
-    public BasicResponseDto<List<AnswerDto>> findMyAnswer(@PathVariable Long questionId, @PathVariable String date, Principal principal) {
+    public BasicResponseDto<?> findMyAnswer(@PathVariable Long questionId, @PathVariable String date, Principal principal) {
+//        if(questionId==30L){
+//            return answerService.findMyVideo(principal, date);
+//        }
         return answerService.findMyAnswer(questionId, principal, date);
     }
 

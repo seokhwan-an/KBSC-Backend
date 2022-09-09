@@ -1,15 +1,22 @@
 package com.hanwul.kbscbackend.domain.answer;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.question.Question;
 import com.hanwul.kbscbackend.domain.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
+import com.hanwul.kbscbackend.exception.NotMyAnswer;
+import com.hanwul.kbscbackend.exception.WrongAnswerId;
+import com.hanwul.kbscbackend.exception.WrongQuestionId;
+import com.hanwul.kbscbackend.file.aws.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -29,13 +36,16 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
+    // file 저장
+    private final FileRepository fileRepository;
+    private final FileUploadService fileUploadService;
 
     @Transactional
     public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
         Optional<Question> byId = questionRepository.findById(questionId);
         if(byId.isEmpty()){
-            throw new IllegalArgumentException("해당 question 없음");
+            throw new WrongQuestionId();
         }
         Question question = byId.get();
         answerDto.setQuestion(question.getContent());
@@ -64,7 +74,7 @@ public class AnswerService {
 
         Optional<Question> byId = questionRepository.findById(questionId);
         if (byId.isEmpty()) {
-            throw new IllegalArgumentException("같은 ID의 질문 없음");
+            throw new WrongAnswerId();
         }
         Question question = byId.get();
         Account account = get_account(principal);
@@ -82,7 +92,7 @@ public class AnswerService {
 
         Optional<Question> byId = questionRepository.findById(questionId);
         if (byId.isEmpty()) {
-            throw new IllegalArgumentException("같은 ID의 질문 없음");
+            throw new WrongQuestionId();
         }
         Question question = byId.get();
         Account account = get_account(principal);
@@ -92,11 +102,32 @@ public class AnswerService {
         return (result.size() >= 1);
     }
 
-    ///// #### 30일이면 자동으로 이렇게 처리 되도록 #####
-    // 동영상 파일 가져오기
+    // 동영상 파일 가져오기 -> 해당 날짜의
+    public BasicResponseDto<List<File>> findMyVideo(Principal principal, String date) {
+        // date : 2019-01-10
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+        LocalDateTime start = localDate.atStartOfDay();
+        LocalDateTime end = localDate.atTime(LocalTime.MAX);
+
+        Account account = get_account(principal);
+        List<File> result =
+                fileRepository.findByAccountAndCreatedDateTimeBetween(account, start, end);
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", result);
+    }
 
 
-    // 동영상 파일 저장하기 -> RDS 저장하기
+    // 동영상 파일 저장하기 ->  해당 부분 나중에 S3 로직으로 변경 예정
+    @Transactional
+    public BasicResponseDto<String> saveVideo(MultipartFile file, Principal principal){
+        Account account = get_account(principal);
+        String url = fileUploadService.uploadImage(file);
+        File build_file = File.builder()
+                .url(url)
+                .account(account)
+                .build();
+        File save = fileRepository.save(build_file);
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", url);
+    }
 
     // Answer 수정하기
     @Transactional
@@ -104,11 +135,11 @@ public class AnswerService {
         Account request_account = get_account(principal);
         Optional<Answer> byId = answerRepository.findById(answerId);
         if (byId.isEmpty()) {
-            throw new IllegalArgumentException("같은 ID의 객체 없음");
+            throw new WrongAnswerId();
         }
         Answer answer = byId.get();
         if (answer.getAccount().getId() != request_account.getId()) {
-            throw new IllegalArgumentException("본인이 작성한 답변이 아님");
+            throw new NotMyAnswer();
         }
         answer.changeAnswer(answerDto.getAnswer());
         AnswerDto answerDto1 = entityToDTO(answer);
@@ -120,11 +151,11 @@ public class AnswerService {
         Account account = get_account(principal);
         Optional<Answer> byId = answerRepository.findById(answerId);
         if (byId.isEmpty()) {
-            throw new IllegalArgumentException("같은 ID의 Answer 없음");
+            throw new WrongAnswerId();
         }
         Answer answer = byId.get();
         if (answer.getAccount().getId() != account.getId()) {
-            throw new IllegalArgumentException("본인이 작성한 답변 아님");
+            throw new NotMyAnswer();
         }
         answerRepository.deleteById(answerId);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", null);
@@ -138,7 +169,7 @@ public class AnswerService {
     public Answer dtoToEntity(AnswerDto answerDto, Account account) {
         Optional<Question> byContent = questionRepository.findByContent(answerDto.getQuestion());
         if (byContent.isEmpty()) {
-            throw new IllegalArgumentException("해당 Question 없음");
+            throw new WrongQuestionId();
         }
         Question question = byContent.get();
         return Answer.builder()
