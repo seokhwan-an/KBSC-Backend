@@ -1,6 +1,5 @@
 package com.hanwul.kbscbackend.exception.handler.advice;
 
-import akka.http.javadsl.Http;
 import com.hanwul.kbscbackend.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,6 +46,22 @@ public class ExControllerAdvice {
     @ExceptionHandler(NotMyAnswer.class)
     public ErrorResult notMyAnswer(IllegalArgumentException e){
         return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);
+    @ExceptionHandler(WrongEmotionId.class)
+    public ErrorResult wrongEmotionId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.NOT_FOUND_EMOTION);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongMatchEmotion.class)
+    public ErrorResult wrongMatchEmotion(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_MATCH_EMOTION);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongEmotionType.class)
+    public ErrorResult wrongEmotionType(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_EMOTION_TYPE);
+
     }
 
 }

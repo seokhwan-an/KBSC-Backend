@@ -9,16 +9,17 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/emotion")
 @RestController
+@Slf4j
 public class EmotionController {
 
     private final EmotionService emotionService;
 
     @GetMapping
     public BasicResponseDto<List<EmotionDto>> getAllPosts(EmotionSearchDto emotionSearchDto, Principal principal) {
+        log.info("{}", emotionService.getAllEmotionDtos(emotionSearchDto, principal));
         return emotionService.getAllEmotionDtos(emotionSearchDto, principal);
     }
 

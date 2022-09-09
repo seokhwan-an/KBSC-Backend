@@ -12,7 +12,10 @@ public enum ExceptionCode {
     NOT_FOUND_USER(HttpStatus.BAD_REQUEST.value(), "유저를 찾을 수 없습니다."),
     WRONG_QUESTION_ID(HttpStatus.BAD_REQUEST.value(), "해당 Question을 찾을 수 없습니다."),
     WRONG_ANSWER_ID(HttpStatus.BAD_REQUEST.value(), "해당 Answer를 찾을 수 없습니다."),
-    NOT_MY_ANSWER(HttpStatus.BAD_REQUEST.value(), "본인이 작성한 답변이 아닙니다..");
+    NOT_MY_ANSWER(HttpStatus.BAD_REQUEST.value(), "본인이 작성한 답변이 아닙니다."),
+    NOT_FOUND_EMOTION(HttpStatus.BAD_REQUEST.value(), "같은 ID의 Emotion을 찾을 수 없습니다."),
+    WRONG_MATCH_EMOTION(HttpStatus.BAD_REQUEST.value(), "본인이 작성한 게시글이 아닙니다."),
+    WRONG_EMOTION_TYPE(HttpStatus.BAD_REQUEST.value(), "type이 PUBLIC이나 PRIVATE가 아닙니다.");
 
     private final int code;
     private final String message;
