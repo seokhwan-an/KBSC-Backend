@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/resources/application-KEY.yml
+/src/main/resources/application-credentials.yml

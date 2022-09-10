@@ -2,4 +2,10 @@ spring:
   profiles:
     include:
       - KEY
+      - aws
+      - credentials
+      - cloud
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 1GB
