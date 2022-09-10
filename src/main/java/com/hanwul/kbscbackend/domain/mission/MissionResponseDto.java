@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MissionDto {
+public class MissionResponseDto {
     private Long id;
 
     private String content;

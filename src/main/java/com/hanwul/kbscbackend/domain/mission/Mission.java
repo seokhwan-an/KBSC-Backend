@@ -1,6 +1,6 @@
 package com.hanwul.kbscbackend.domain.mission;
 
-import com.hanwul.kbscbackend.domain.category.Category;
+import com.hanwul.kbscbackend.domain.mission.category.Category;
 import lombok.*;
 
 import javax.persistence.*;

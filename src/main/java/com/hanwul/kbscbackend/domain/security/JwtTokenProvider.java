@@ -21,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
+    private final String TOKEN_PREFIX = "Bearer ";
     private String secretKey = "myprojectsecret";
     private long tokenValidTime = 30 * 60 * 1000L;
     private final UserDetailsService userDetailsService;
@@ -56,7 +57,8 @@ public class JwtTokenProvider {
 
     // Reqeust의 Header에서 token 값을 가져옵니다. "Authorization" : "TOKEN값"
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+        String token = request.getHeader("Authorization");
+        return token == null ? null : token.replace(TOKEN_PREFIX, "");
     }
 
     // 토큰의 유효성 + 만료일자 확인
