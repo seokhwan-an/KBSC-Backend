@@ -23,8 +23,8 @@ public class Question extends BaseEntity {
 
     private String content;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private List<Answer> answerList = new ArrayList<>();
+//    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+//    private List<Answer> answerList = new ArrayList<>();
 
     @Builder
     public Question(String content) {

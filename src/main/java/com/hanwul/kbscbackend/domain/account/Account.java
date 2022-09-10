@@ -37,14 +37,14 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "constructor", cascade = CascadeType.ALL)
     private List<ChattingRoom> chattingRoomList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<EmotionLike> emotionLikeList = new ArrayList<>();
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+//    private List<EmotionLike> emotionLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Emotion> emotionList = new ArrayList<>();
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+//    private List<Emotion> emotionList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Answer> answerList = new ArrayList<>() ;
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+//    private List<Answer> answerList = new ArrayList<>() ;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

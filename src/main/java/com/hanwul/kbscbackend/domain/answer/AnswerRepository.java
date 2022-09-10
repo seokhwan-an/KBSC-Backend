@@ -14,4 +14,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Optional<Question> findByQuestion(Question question);
 
     List<Answer> findByCreatedDateTimeBetween(LocalDateTime start, LocalDateTime end);
+
+    List<Answer> findByQuestionAndAccountAndCreatedDateTimeBetween(Question question, Account account, LocalDateTime start, LocalDateTime end);
 }

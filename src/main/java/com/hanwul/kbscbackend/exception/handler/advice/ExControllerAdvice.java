@@ -31,6 +31,21 @@ public class ExControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongQuestionId.class)
+    public ErrorResult wrongQuestionId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_QUESTION_ID);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongAnswerId.class)
+    public ErrorResult wrongAnswerId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_ANSWER_ID);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotMyAnswer.class)
+    public ErrorResult notMyAnswer(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);
     @ExceptionHandler(WrongEmotionId.class)
     public ErrorResult wrongEmotionId(IllegalArgumentException e){
         return new ErrorResult(ExceptionCode.NOT_FOUND_EMOTION);
@@ -46,6 +61,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(WrongEmotionType.class)
     public ErrorResult wrongEmotionType(IllegalArgumentException e){
         return new ErrorResult(ExceptionCode.WRONG_EMOTION_TYPE);
+
     }
 
 }

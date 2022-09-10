@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.answer;
 
+import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,4 +11,5 @@ public class AnswerDto {
     private Long id;
     private String question;
     private String answer;
+
 }
