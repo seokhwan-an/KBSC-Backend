@@ -168,13 +168,11 @@ public class EmotionService {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<EmotionLike> result = emotionLikeRepository.findLikeTopSevenDays(start, end);
+        List<Emotion> result = emotionRepository.findLikeTopSevenDays(start, end,Sort.by(Sort.Direction.DESC,"count"));
         List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
-        List<EmotionDto> list = result.stream().limit(3).map(emotionLike -> {
-            Emotion emotion = emotionLike.getEmotion();
-            return entityToDto(emotion);
-        }).collect(Collectors.toList());
-
+        List<EmotionDto> list = result.stream().limit(3)
+                .map(emotion -> entityToDto(emotion))
+                .collect(Collectors.toList());
         for (EmotionDto emotionDto : list) {
             for (EmotionLike emotionLike : liked) {
                 if(emotionLike.getEmotion().getId() == emotionDto.getId()){
