@@ -8,15 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface
-EmotionRepository extends JpaRepository<Emotion, Long> {
-    Optional<Emotion> findByStatus(Status status);
+public interface EmotionRepository extends JpaRepository<Emotion, Long> {
 
-    Optional<Emotion> findByAccount(Account account);
+    List<Emotion> findByStatus(Status status);
 
     List<Emotion> findAllByAccount(Account account);
 
     @Query("SELECT e FROM Emotion e WHERE e.status =  'PUBLIC'")
     List<Emotion> findAllPublicStatus(Sort sort);
-
 }
