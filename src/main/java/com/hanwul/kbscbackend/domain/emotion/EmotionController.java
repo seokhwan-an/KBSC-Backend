@@ -4,6 +4,7 @@ import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.dto.EmotionSearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -24,8 +25,8 @@ public class EmotionController {
     }
 
     @GetMapping("/top")
-    public BasicResponseDto<List<EmotionDto>> getTop(){
-        return emotionService.getTopLikes();
+    public BasicResponseDto<List<EmotionDto>> getTop(Principal principal){
+        return emotionService.getTopLikes(principal);
     }
 
     @PostMapping

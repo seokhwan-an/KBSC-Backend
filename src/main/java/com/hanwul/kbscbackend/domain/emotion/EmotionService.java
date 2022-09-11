@@ -19,6 +19,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,6 +114,7 @@ public class EmotionService {
         String type = emotionSearchDto.getType();
         Account account = get_account(principal);
         List<Emotion> result;
+        List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
 
         if(type.equals("private")){
             result = emotionRepository.findAllByAccount(account);
@@ -126,6 +128,13 @@ public class EmotionService {
         }
         List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
                 .collect(Collectors.toList());
+        for (EmotionDto emotionDto : emotionDtos) {
+            for (EmotionLike emotionLike : liked) {
+                if(emotionLike.getEmotion().getId() == emotionDto.getId()){
+                    emotionDto.setLike(true);
+                }
+            }
+        }
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", emotionDtos);
     }
 
@@ -155,17 +164,24 @@ public class EmotionService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", null);
     }
 
-    public BasicResponseDto<List<EmotionDto>> getTopLikes() {
+    public BasicResponseDto<List<EmotionDto>> getTopLikes(Principal principal) {
+        Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        // List<EmotionLike> result = emotionLikeRepository.findAllByCreatedDateTimeBetween(start, end);
         List<EmotionLike> result = emotionLikeRepository.findLikeTopSevenDays(start, end);
-
+        List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
         List<EmotionDto> list = result.stream().limit(3).map(emotionLike -> {
             Emotion emotion = emotionLike.getEmotion();
             return entityToDto(emotion);
         }).collect(Collectors.toList());
 
+        for (EmotionDto emotionDto : list) {
+            for (EmotionLike emotionLike : liked) {
+                if(emotionLike.getEmotion().getId() == emotionDto.getId()){
+                    emotionDto.setLike(true);
+                }
+            }
+        }
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", list);
     }
 
