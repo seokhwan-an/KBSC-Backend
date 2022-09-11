@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -113,29 +114,32 @@ public class EmotionService {
     public BasicResponseDto<List<EmotionDto>> getAllEmotionDtos(EmotionSearchDto emotionSearchDto, Principal principal) {
         String type = emotionSearchDto.getType();
         Account account = get_account(principal);
-        List<Emotion> result;
+        List<Emotion> emotions;
         List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
 
         if(type.equals("private")){
-            result = emotionRepository.findAllByAccount(account);
+            emotions = emotionRepository.findAllByAccount(account);
         }
         else if(type.equals("public")){
             // public 한 애들 -> 시간 순
-            result = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
+            emotions = emotionRepository.findAllPublicStatus(Sort.by("createdDateTime").descending());
        }
         else {
             throw new WrongEmotionType();
         }
-        List<EmotionDto> emotionDtos = result.stream().map(emotion -> entityToDto(emotion))
+
+        List<EmotionDto> result = emotions.stream()
+                .map(e -> {
+                    EmotionDto emotionDto = entityToDto(e);
+                    for (EmotionLike emotionLike : liked) {
+                      if(emotionLike.getEmotion().getId() == emotionDto.getId()){
+                      emotionDto.setLike(true);
+                      }
+                  }
+                    return emotionDto;
+                })
                 .collect(Collectors.toList());
-        for (EmotionDto emotionDto : emotionDtos) {
-            for (EmotionLike emotionLike : liked) {
-                if(emotionLike.getEmotion().getId() == emotionDto.getId()){
-                    emotionDto.setLike(true);
-                }
-            }
-        }
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", emotionDtos);
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", result);
     }
 
     // like 많이 받은 순 세 개
@@ -171,15 +175,16 @@ public class EmotionService {
         List<Emotion> result = emotionRepository.findLikeTopSevenDays(start, end,Sort.by(Sort.Direction.DESC,"count"));
         List<EmotionLike> liked = emotionLikeRepository.findByAccount(account);
         List<EmotionDto> list = result.stream().limit(3)
-                .map(emotion -> entityToDto(emotion))
+                .map(emotion -> {
+                   EmotionDto emotionDto = entityToDto(emotion);
+                    for (EmotionLike emotionLike : liked) {
+                        if(emotionLike.getEmotion().getId() == emotionDto.getId()){
+                            emotionDto.setLike(true);
+                        }
+                    }
+                    return  emotionDto;
+                })
                 .collect(Collectors.toList());
-        for (EmotionDto emotionDto : list) {
-            for (EmotionLike emotionLike : liked) {
-                if(emotionLike.getEmotion().getId() == emotionDto.getId()){
-                    emotionDto.setLike(true);
-                }
-            }
-        }
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", list);
     }
 
