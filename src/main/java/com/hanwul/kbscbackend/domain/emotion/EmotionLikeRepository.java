@@ -13,7 +13,8 @@ public interface EmotionLikeRepository extends JpaRepository<EmotionLike, Long> 
 
     Optional<EmotionLike> findByAccountAndEmotion(Account account, Emotion emotion);
     List<EmotionLike> findAllByCreatedDateTimeBetween(LocalDateTime start, LocalDateTime end);
+    List<EmotionLike> findByAccount (Account account);
 
-    @Query("SELECT e FROM EmotionLike e where e.createdDateTime between :start and :end GROUP BY e.emotion HAVING COUNT(e) > 1 ORDER BY COUNT(e) DESC")
+    @Query("SELECT e FROM EmotionLike e where e.createdDateTime between :start and :end")
     List<EmotionLike> findLikeTopSevenDays(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

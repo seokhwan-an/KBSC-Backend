@@ -18,6 +18,8 @@ public class EmotionDto {
 
     private Long count;
 
+    private boolean like;
+
     private LocalDateTime createdDateTime;
 
     private LocalDateTime modifiedDateTime;
