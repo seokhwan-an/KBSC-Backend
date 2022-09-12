@@ -1,7 +1,7 @@
 package com.hanwul.kbscbackend.domain.answer;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
-import com.hanwul.kbscbackend.domain.question.Question;
+import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
 import com.hanwul.kbscbackend.domain.account.Account;
 import lombok.*;
 
