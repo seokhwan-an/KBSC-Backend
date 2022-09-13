@@ -22,6 +22,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public class AnswerService {
     public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
         Optional<Question> byId = questionRepository.findById(questionId);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongQuestionId();
         }
         Question question = byId.get();
@@ -67,10 +68,14 @@ public class AnswerService {
     }
 
     public BasicResponseDto<List<AnswerDto>> findMyAnswer(Long questionId, Principal principal, String date) {
-        // date : 2019-01-10
+        // date : 2019-01-01~30
+        // 수정
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-        LocalDateTime start = localDate.atStartOfDay();
-        LocalDateTime end = localDate.atTime(LocalTime.MAX);
+        LocalDate startDate = localDate.withDayOfMonth(1);
+        LocalDate endDate = localDate.withDayOfMonth(localDate.lengthOfMonth());
+
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(LocalTime.MAX);
 
         Optional<Question> byId = questionRepository.findById(questionId);
         if (byId.isEmpty()) {
@@ -118,7 +123,7 @@ public class AnswerService {
 
     // 동영상 파일 저장하기 ->  해당 부분 나중에 S3 로직으로 변경 예정
     @Transactional
-    public BasicResponseDto<String> saveVideo(MultipartFile file, Principal principal){
+    public BasicResponseDto<String> saveVideo(MultipartFile file, Principal principal) {
         Account account = get_account(principal);
         String url = fileUploadService.uploadImage(file);
         File build_file = File.builder()
