@@ -16,8 +16,7 @@ import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
 import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class DataInit {
     private final AccountRepository accountRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final CategoryRepository categoryRepository;
     private final MissionRepository missionRepository;
     private final EmotionRepository emotionRepository;
@@ -43,7 +42,7 @@ public class DataInit {
             Account account = Account.builder()
                     .username("user" + i)
                     .nickname("nick" + i)
-//                    .password(passwordEncoder.encode("1234"))
+                    .password(passwordEncoder.encode("1234"))
                     .build();
 
             account = accountRepository.save(account);
@@ -91,9 +90,5 @@ public class DataInit {
         emotionList.add(Emotion.builder().content("감정3").account(account).status(Status.PUBLIC).build());
         emotionList.add(Emotion.builder().content("감정4").account(account).status(Status.PRIVATE).build());
         emotionRepository.saveAll(emotionList);
-    }
-
-    void createChatting() {
-
     }
 }
