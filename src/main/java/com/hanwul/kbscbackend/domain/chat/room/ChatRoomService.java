@@ -2,6 +2,7 @@ package com.hanwul.kbscbackend.domain.chat.room;
 
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
+import com.hanwul.kbscbackend.domain.rate.RateRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final AccountRepository accountRepository;
+    private final RateRepository rateRepository;
 
     @Transactional
     public BasicResponseDto<Long> create(ChatRoomDto chatRoomDto, Principal principal){
@@ -41,11 +43,17 @@ public class ChatRoomService {
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDto);
     }
 
-    public BasicResponseDto<List<ChatRoomDto>> getAll(Principal principal){
-        Account account = get_account(principal);
+    public BasicResponseDto<List<ChatRoomDto>> getAll(){
         List<ChatRoom> results = chatRoomRepository.findAll();
-        List<ChatRoomDto> chatRoomDtos = results.stream().filter(chatRoom -> chatRoom.getAccount() != account)
-                .map(chatRoom -> entityToDto(chatRoom)).collect(Collectors.toList());
+        List<ChatRoomDto> chatRoomDtos = results.stream().map(chatRoom -> {
+            ChatRoomDto chatRoomDto = entityToDto(chatRoom);
+            Account account = chatRoom.getAccount();
+            log.info("account: {} id: {}", account.getUsername(), account.getId());
+            int count = rateRepository.countByEstimatedAndPrefer(account, true);
+            log.info("count: {}", count);
+            chatRoomDto.setLikeCount(count);
+            return chatRoomDto;
+        }).collect(Collectors.toList());
         return new BasicResponseDto<>(HttpStatus.OK.value(), "chatRoom", chatRoomDtos);
     }
 

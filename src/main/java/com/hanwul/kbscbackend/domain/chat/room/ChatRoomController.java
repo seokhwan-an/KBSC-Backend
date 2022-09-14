@@ -27,8 +27,8 @@ public class ChatRoomController {
     }
 
     @GetMapping
-    public BasicResponseDto<List<ChatRoomDto>> getAll(Principal principal){
-        return chatRoomService.getAll(principal);
+    public BasicResponseDto<List<ChatRoomDto>> getAll(){
+        return chatRoomService.getAll();
     }
 
     @GetMapping("/my")
