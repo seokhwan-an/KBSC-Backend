@@ -44,8 +44,9 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotMyAnswer.class)
-    public ErrorResult notMyAnswer(IllegalArgumentException e){
+    public ErrorResult notMyAnswer(IllegalArgumentException e) {
         return new ErrorResult(ExceptionCode.NOT_MY_ANSWER);
+    }
     @ExceptionHandler(WrongEmotionId.class)
     public ErrorResult wrongEmotionId(IllegalArgumentException e){
         return new ErrorResult(ExceptionCode.NOT_FOUND_EMOTION);
@@ -64,4 +65,15 @@ public class ExControllerAdvice {
 
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongMatchMission.class)
+    public ErrorResult wrongMatchMission(IllegalArgumentException e){
+        return new  ErrorResult(ExceptionCode.WRONG_MATCH_MISSION);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongCategoryId.class)
+    public ErrorResult wrongCategoryId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_CATEGORY_ID);
+    }
 }
