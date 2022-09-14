@@ -12,7 +12,12 @@ public class MissionResponseDto {
 
     private String content;
 
-    private String category;
+    private MissionCategory category;
 
     private Boolean isSuccess;
+
+    public boolean changeStatus(Boolean isSuccess){
+        this.isSuccess = !(this.isSuccess);
+        return this.isSuccess;
+    }
 }
