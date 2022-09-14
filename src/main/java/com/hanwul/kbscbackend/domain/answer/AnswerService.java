@@ -86,7 +86,18 @@ public class AnswerService {
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
         List<AnswerDto> resultDtos = getDtoList(result);
+        if(resultDtos.size() < 1){
+            AnswerDto build = getTempDto(question);
+            resultDtos.add(build);
+        }
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", resultDtos);
+    }
+
+    private AnswerDto getTempDto(Question question) {
+        return AnswerDto.builder()
+                .question(question.getContent())
+                .answer("")
+                .build();
     }
 
     // 답변 이미 완료했는지 확인 -> 필요 로직인지 판단 필요
