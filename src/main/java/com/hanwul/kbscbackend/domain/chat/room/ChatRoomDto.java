@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.chat.room;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -8,18 +9,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
+@Builder
 public class ChatRoomDto {
 
-    private String roomId;
-    private String name;
-    //WebSocketSession은 Spring에서 Websocket Connection이 맺어진 세션
-    private Set<WebSocketSession> sessions = new HashSet<>();
+    private Long id;
+    private String description;
+    private RoomStatus status;
 
-    public static ChatRoomDto create(String name){
-        ChatRoomDto room = new ChatRoomDto();
-
-        room.roomId = UUID.randomUUID().toString();
-        room.name = name;
-        return room;
-    }
 }

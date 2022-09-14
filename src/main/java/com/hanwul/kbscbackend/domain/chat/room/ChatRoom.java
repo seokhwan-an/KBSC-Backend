@@ -1,16 +1,16 @@
 package com.hanwul.kbscbackend.domain.chat.room;
 
 import com.hanwul.kbscbackend.domain.account.Account;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "chat_room")
 public class ChatRoom {
     @Id
@@ -24,11 +24,4 @@ public class ChatRoom {
 
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
-
-    @Builder
-    public ChatRoom(String description, Account account, RoomStatus status) {
-        this.description = description;
-        this.account = account;
-        this.status = status;
-    }
 }
