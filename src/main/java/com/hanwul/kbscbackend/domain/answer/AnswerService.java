@@ -70,6 +70,7 @@ public class AnswerService {
     public BasicResponseDto<List<AnswerDto>> findMyAnswer(Long questionId, Principal principal, String date) {
         // date : 2019-01-01~30
         // 수정
+        date = date + "-01";
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         LocalDate startDate = localDate.withDayOfMonth(1);
         LocalDate endDate = localDate.withDayOfMonth(localDate.lengthOfMonth());
