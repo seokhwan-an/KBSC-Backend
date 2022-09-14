@@ -76,4 +76,5 @@ public class ExControllerAdvice {
     public ErrorResult wrongCategoryId(IllegalArgumentException e){
         return new ErrorResult(ExceptionCode.WRONG_CATEGORY_ID);
     }
+
 }

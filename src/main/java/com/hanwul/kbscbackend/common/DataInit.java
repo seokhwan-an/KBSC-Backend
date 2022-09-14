@@ -4,15 +4,14 @@ import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.answer.AnswerRepository;
-import com.hanwul.kbscbackend.domain.mission.category.Category;
+
 import com.hanwul.kbscbackend.domain.mission.category.CategoryRepository;
 import com.hanwul.kbscbackend.domain.emotion.Emotion;
 import com.hanwul.kbscbackend.domain.emotion.EmotionRepository;
 import com.hanwul.kbscbackend.domain.emotion.Status;
-import com.hanwul.kbscbackend.domain.mission.Mission;
 import com.hanwul.kbscbackend.domain.mission.MissionRepository;
-import com.hanwul.kbscbackend.domain.question.Question;
-import com.hanwul.kbscbackend.domain.question.QuestionRepository;
+import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
+import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
