@@ -86,6 +86,7 @@ public class EmotionService {
             throw new WrongMatchEmotion();
         }
         emotionRepository.deleteById(id);
+        emotionLikeRepository.deleteByAccount(account);
         return new BasicResponseDto<>(HttpStatus.OK.value(), "emotion", null);
     }
 

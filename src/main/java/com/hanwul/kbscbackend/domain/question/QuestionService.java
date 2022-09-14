@@ -35,6 +35,7 @@ public class QuestionService {
 
     public QuestionDto entityToDto(Question question){
         return QuestionDto.builder()
+                .id(question.getId())
                 .content(question.getContent())
                 .build();
     }
