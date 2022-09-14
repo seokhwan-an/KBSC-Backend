@@ -3,9 +3,7 @@ package com.hanwul.kbscbackend.domain.questionanswer.question;
 
 import com.hanwul.kbscbackend.domain.answer.Answer;
 import com.hanwul.kbscbackend.domain.answer.AnswerDto;
-import com.hanwul.kbscbackend.domain.question.Question;
-import com.hanwul.kbscbackend.domain.question.QuestionDto;
-import com.hanwul.kbscbackend.domain.question.QuestionRepository;
+import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.hanwul.kbscbackend.domain.question;
+package com.hanwul.kbscbackend.domain.questionanswer.question;
 
 import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionService;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;

@@ -23,7 +23,7 @@ public class JwtTokenProvider {
 
     private final String TOKEN_PREFIX = "Bearer ";
     private String secretKey = "myprojectsecret";
-    private long tokenValidTime = 60 * 60 * 24 * 7;
+    private long tokenValidTime = 30 * 60 * 1000L;
     private final UserDetailsService userDetailsService;
 
     @PostConstruct
