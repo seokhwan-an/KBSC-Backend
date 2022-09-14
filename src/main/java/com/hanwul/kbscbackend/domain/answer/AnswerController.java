@@ -43,7 +43,7 @@ public class AnswerController {
     }
 
     @PutMapping("/{answerId}")
-    public BasicResponseDto<Long> modify(@PathVariable Long answerId, @RequestBody AnswerDto answerDto, Principal principal) {
+    public BasicResponseDto<AnswerDto> modify(@PathVariable Long answerId, @RequestBody AnswerDto answerDto, Principal principal) {
         return answerService.modify(answerId, answerDto, principal);
     }
 

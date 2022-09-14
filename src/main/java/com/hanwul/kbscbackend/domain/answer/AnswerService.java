@@ -96,6 +96,7 @@ public class AnswerService {
 
     private AnswerDto getTempDto(Question question) {
         return AnswerDto.builder()
+                .id(question.getId())
                 .question(question.getContent())
                 .answer("")
                 .build();
@@ -148,7 +149,7 @@ public class AnswerService {
 
     // Answer 수정하기
     @Transactional
-    public BasicResponseDto<Long> modify(Long answerId, AnswerDto answerDto, Principal principal) {
+    public BasicResponseDto<AnswerDto> modify(Long answerId, AnswerDto answerDto, Principal principal) {
         Account request_account = get_account(principal);
         Optional<Answer> byId = answerRepository.findById(answerId);
         if (byId.isEmpty()) {
@@ -160,7 +161,7 @@ public class AnswerService {
         }
         answer.changeAnswer(answerDto.getAnswer());
         AnswerDto answerDto1 = entityToDTO(answer);
-        return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", answerDto1.getId());
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", answerDto1);
     }
 
     @Transactional
@@ -199,7 +200,8 @@ public class AnswerService {
 
     public AnswerDto entityToDTO(Answer answer) {
         return AnswerDto.builder()
-                .id(answer.getId())
+                .id(answer.getQuestion().getId())
+                .answer_id(answer.getId())
                 .question(answer.getQuestion().getContent())
                 .answer(answer.getAnswer())
                 .build();

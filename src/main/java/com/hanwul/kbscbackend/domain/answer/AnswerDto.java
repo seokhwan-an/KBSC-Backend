@@ -9,6 +9,7 @@ import lombok.Data;
 public class AnswerDto {
 
     private Long id;
+    private Long answer_id;
     private String question;
     private String answer;
 
