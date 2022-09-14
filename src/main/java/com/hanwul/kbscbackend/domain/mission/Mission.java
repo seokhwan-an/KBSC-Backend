@@ -19,12 +19,7 @@ public class Mission {
 
     private String content;
 
-    private Boolean isSuccess;
-
     @ManyToOne(fetch = FetchType.LAZY)
     public Category category;
 
-    public void changeStatus(){
-        this.isSuccess = !(this.isSuccess);
-    }
 }

@@ -1,4 +1,4 @@
-package com.hanwul.kbscbackend.domain.questionanswer.question;
+package com.hanwul.kbscbackend.domain.question;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

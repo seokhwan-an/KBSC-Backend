@@ -1,4 +1,4 @@
-package com.hanwul.kbscbackend.domain.questionanswer.question;
+package com.hanwul.kbscbackend.domain.question;
 
 import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.answer.Answer;

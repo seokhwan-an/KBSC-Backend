@@ -1,14 +1,15 @@
 package com.hanwul.kbscbackend.domain.mission;
 
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
-import com.hanwul.kbscbackend.domain.mission.category.CategoryResponseDto;
-import com.hanwul.kbscbackend.domain.mission.category.CategoryToggleDto;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountService;
+import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,33 +18,26 @@ import java.util.List;
 public class MissionController {
 
     private final MissionService missionService;
-    private final MissionRepository missionRepository;
-    private final CategoryAccountService categoryAccountService;
-    private final CategoryAccountRepository categoryAccountRepository;
-    private final AccountRepository accountRepository;
 
 
-    @GetMapping("/categories")
-    public BasicResponseDto<List<CategoryResponseDto>> getCategories() {
-        return missionService.getCategories();
+    // 미션 보여주기
+    @GetMapping("")
+    public BasicResponseDto<List<MissionResponseDto>> showMission(Principal principal){
+        return missionService.showMission(principal);
     }
 
     @PutMapping("/categories/{categoryId}")
-    public BasicResponseDto<CategoryToggleDto> toggleCategory(@PathVariable Long categoryId) {
-        return missionService.toggleCategory(categoryId);
+    public BasicResponseDto<Void> click(@PathVariable Long categoryId, Principal principal) {
+        return missionService.toggleClick(categoryId,principal);
     }
 
-    // 카테고리와 미션들 갖고오기
-    @GetMapping
-    public BasicResponseDto<List<MissionResponseDto>> getMissions() {
-        return null;
-//        List<MissionDto> missionDtos = categoryAccountService.missions();
-//        return new BasicResponseDto<>(200, "Mission", missionDtos);
+    @PutMapping("/{missionId}/success")
+    public BasicResponseDto<Void> success(@PathVariable Long missionId, Principal principal){
+        return missionService.successClick(missionId, principal);
     }
-//
-//    @PutMapping("/{missionId}")
-//    public BasicResponseDto<Long> changeStatus(@PathVariable Long missionId){
-//        return service.changeStatus(missionId);
-//    }
 
+    @GetMapping("/success")
+    public BasicResponseDto<List<Success>> successList(Principal principal){
+        return missionService.successListCount(principal);
+    }
 }

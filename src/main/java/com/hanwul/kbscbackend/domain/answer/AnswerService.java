@@ -3,8 +3,8 @@ package com.hanwul.kbscbackend.domain.answer;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
-import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
-import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
+import com.hanwul.kbscbackend.domain.question.Question;
+import com.hanwul.kbscbackend.domain.question.QuestionRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
 import com.hanwul.kbscbackend.exception.NotMyAnswer;
 import com.hanwul.kbscbackend.exception.WrongAnswerId;
@@ -22,7 +22,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +44,7 @@ public class AnswerService {
     public BasicResponseDto<Long> create(Long questionId, AnswerDto answerDto, Principal principal) {
         Account account = get_account(principal);
         Optional<Question> byId = questionRepository.findById(questionId);
-        if (byId.isEmpty()) {
+        if(byId.isEmpty()){
             throw new WrongQuestionId();
         }
         Question question = byId.get();
@@ -68,14 +67,10 @@ public class AnswerService {
     }
 
     public BasicResponseDto<List<AnswerDto>> findMyAnswer(Long questionId, Principal principal, String date) {
-        // date : 2019-01-01~30
-        // 수정
+        // date : 2019-01-10
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-        LocalDate startDate = localDate.withDayOfMonth(1);
-        LocalDate endDate = localDate.withDayOfMonth(localDate.lengthOfMonth());
-
-        LocalDateTime start = startDate.atStartOfDay();
-        LocalDateTime end = endDate.atTime(LocalTime.MAX);
+        LocalDateTime start = localDate.atStartOfDay();
+        LocalDateTime end = localDate.atTime(LocalTime.MAX);
 
         Optional<Question> byId = questionRepository.findById(questionId);
         if (byId.isEmpty()) {
@@ -86,18 +81,7 @@ public class AnswerService {
         List<Answer> result =
                 answerRepository.findByQuestionAndAccountAndCreatedDateTimeBetween(question, account, start, end);
         List<AnswerDto> resultDtos = getDtoList(result);
-        if(resultDtos.size() < 1){
-            AnswerDto build = getTempDto(question);
-            resultDtos.add(build);
-        }
         return new BasicResponseDto<>(HttpStatus.OK.value(), "answer", resultDtos);
-    }
-
-    private AnswerDto getTempDto(Question question) {
-        return AnswerDto.builder()
-                .question(question.getContent())
-                .answer("")
-                .build();
     }
 
     // 답변 이미 완료했는지 확인 -> 필요 로직인지 판단 필요
@@ -134,7 +118,7 @@ public class AnswerService {
 
     // 동영상 파일 저장하기 ->  해당 부분 나중에 S3 로직으로 변경 예정
     @Transactional
-    public BasicResponseDto<String> saveVideo(MultipartFile file, Principal principal) {
+    public BasicResponseDto<String> saveVideo(MultipartFile file, Principal principal){
         Account account = get_account(principal);
         String url = fileUploadService.uploadImage(file);
         File build_file = File.builder()
