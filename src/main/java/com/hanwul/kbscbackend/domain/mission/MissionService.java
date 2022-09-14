@@ -4,18 +4,23 @@ import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.mission.category.Category;
 import com.hanwul.kbscbackend.domain.mission.category.CategoryRepository;
-import com.hanwul.kbscbackend.domain.mission.category.CategoryResponseDto;
-import com.hanwul.kbscbackend.domain.mission.category.CategoryToggleDto;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccount;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepository;
-import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountRepository;
+import com.hanwul.kbscbackend.domain.mission.success.Success;
+import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
+import com.hanwul.kbscbackend.exception.WrongCategoryId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,46 +35,89 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final CategoryRepository categoryRepository;
     private final CategoryAccountRepository categoryAccountRepository;
-    private final MissionAccountRepository missionAccountRepository;
     private final AccountRepository accountRepository;
+    private final SuccessRepository successRepository;
+    private final List<MissionResponseDto> result = new ArrayList<>();
 
-    public BasicResponseDto<List<CategoryResponseDto>> getCategories() {
-        Account account = getUser();
-        // 유저를 통해 선택한 카테고리들 갖고오기
-        List<CategoryAccount> checkedCategoryAccount = categoryAccountRepository.findByAccount(account);
-        List<Category> checkedCategories = checkedCategoryAccount.stream()
-                .map(CategoryAccount::getCategory)
-                .collect(Collectors.toList());
-        List<Category> allCategories = categoryRepository.findAll();
 
-        List<CategoryResponseDto> result = new ArrayList<>();
-        for (Category category : allCategories) {
-            CategoryResponseDto responseDto = new CategoryResponseDto(category.getId(), category.getCategory().getKorean());
-            if (checkedCategories.contains(category)) {
-                responseDto.setChecked(true);
-            }
-            result.add(responseDto);
+
+    // 토글버튼 눌렀을 때(categoryAccount)
+    @Transactional
+    public BasicResponseDto<Void> toggleClick(Long categoryId,Principal principal){
+        Account account = get_account(principal);
+        Optional<Category> byId = categoryRepository.findById(categoryId);
+        if(byId.isEmpty()){
+            throw new WrongCategoryId();
         }
-        return new BasicResponseDto<>(200, "MISSION_CATEGORY", result);
+
+        Category category = byId.get();
+        Optional<CategoryAccount> categoryAccount = categoryAccountRepository.findByAccountAndCategory(account, category);
+        categoryAccount.ifPresentOrElse(
+                ca -> {
+                    categoryAccountRepository.delete(ca);
+                },
+                () -> {
+                    CategoryAccount ca = CategoryAccount.builder().account(account).category(category).build();
+                    categoryAccountRepository.save(ca);
+                }
+        );
+        return new BasicResponseDto<>(HttpStatus.OK.value(), "categoryclick", null);
     }
 
-    @Transactional
-    public BasicResponseDto<CategoryToggleDto> toggleCategory(Long categoryId) {
-        Account account = getUser();
-        Optional<Category> result = categoryRepository.findById(categoryId);
-        Category category = result.get();
-        CategoryToggleDto toggleDto = new CategoryToggleDto();
-        Optional<CategoryAccount> findCategoryAccount = categoryAccountRepository.findByAccountAndCategory(account, category);
-        findCategoryAccount.ifPresentOrElse((categoryAccount -> {
-            categoryAccountRepository.delete(categoryAccount);
-            toggleDto.setChecked(false);
-        }), () -> {
-            CategoryAccount build = CategoryAccount.builder().account(account).category(category).build();
-            categoryAccountRepository.save(build);
-            toggleDto.setChecked(true);
-        });
+    public BasicResponseDto<List<MissionResponseDto>> showMission(Principal principal){
+        Account account = get_account(principal);
+        List<CategoryAccount> categoryAccounts = categoryAccountRepository.findByAccount(account);
+        List<MissionResponseDto> randomMission = result;
+        List<MissionResponseDto> result = randomMission.stream()
+                .filter(e-> {
+                    return categoryAccounts.stream().anyMatch(ca -> e.getCategory().equals(ca.getCategory().getCategory()));
+                }).collect(Collectors.toList());
+        return new BasicResponseDto<>(200,"showmission",result);
+    }
 
-        return new BasicResponseDto<>(200, "MISSION_CATEGORY", toggleDto);
+    // 성공버튼
+    @Transactional
+    public BasicResponseDto<Void> successClick(Long missionId, Principal principal){
+        Account account = get_account(principal);
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        Optional<Success> success = successRepository.findSuccessToday(start,end, account);
+        Success today = success.get();
+        for(int i = 0; i < result.size(); i++){
+            if(result.get(i).getId() == missionId){
+                if(result.get(i).getIsSuccess() == false){
+                    result.get(i).setIsSuccess(true);
+                    today.addsuccess();
+                } else{
+                    result.get(i).setIsSuccess(false);
+                    today.deletesuccess();
+                }
+            }
+        }
+        return new BasicResponseDto<>(200,"mission_clear",null);
+    }
+
+    @Scheduled(cron = "0 02 19 * * *")
+    @Transactional(readOnly = true)
+    public void randommission(){
+        long random = (int)(Math.random()*4)+1;
+        for(int i = 0; i < 5; i++){
+            Optional<Mission> mission = missionRepository.findById(random);
+            if(!mission.isPresent()){
+                throw new IllegalStateException();
+            }
+            MissionResponseDto missionResponseDto = entityToDto(mission.get());
+            result.add(missionResponseDto);
+            random = random + 5;
+            log.info("미션 이름 {}", missionResponseDto.getCategory().getKorean());
+        }
+    }
+    public BasicResponseDto<List<Success>> successListCount(Principal principal){
+        Account account = get_account(principal);
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        List<Success> SuccessList = successRepository.findSuccessTopSevenDay(start,end,account);
+        return new  BasicResponseDto<>(200,"SUCCESS_LIST",SuccessList);
     }
 
     // create
@@ -112,7 +160,8 @@ public class MissionService {
         return MissionResponseDto.builder()
                 .id(mission.getId())
                 .content(mission.getContent())
-                .isSuccess(mission.getIsSuccess())
+                .category(mission.getCategory().getCategory())
+                .isSuccess(false)
                 .build();
     }
 
@@ -120,16 +169,10 @@ public class MissionService {
         return Mission.builder()
                 .id(dto.getId())
                 .content(dto.getContent())
-                .isSuccess(dto.getIsSuccess())
                 .build();
     }
 
-    private Account getUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<Account> findAccount = accountRepository.findByUsername(username);
-        if (findAccount.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-        return findAccount.get();
+    private Account get_account(Principal principal) {
+        return accountRepository.findByUsername(principal.getName()).get();
     }
 }
