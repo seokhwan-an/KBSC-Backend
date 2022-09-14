@@ -10,5 +10,9 @@ public class ChatRoomDto {
     private Long id;
     private String description;
     private RoomStatus status;
+    private int likeCount;
 
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
 }
