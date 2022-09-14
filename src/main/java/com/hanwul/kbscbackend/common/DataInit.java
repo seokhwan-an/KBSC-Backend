@@ -10,8 +10,9 @@ import com.hanwul.kbscbackend.domain.emotion.Emotion;
 import com.hanwul.kbscbackend.domain.emotion.EmotionRepository;
 import com.hanwul.kbscbackend.domain.emotion.Status;
 import com.hanwul.kbscbackend.domain.mission.MissionRepository;
-import com.hanwul.kbscbackend.domain.questionanswer.question.Question;
-import com.hanwul.kbscbackend.domain.questionanswer.question.QuestionRepository;
+
+import com.hanwul.kbscbackend.domain.question.Question;
+import com.hanwul.kbscbackend.domain.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

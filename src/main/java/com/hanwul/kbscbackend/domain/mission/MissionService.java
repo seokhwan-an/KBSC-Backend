@@ -9,6 +9,7 @@ import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepo
 import com.hanwul.kbscbackend.domain.mission.success.Success;
 import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.dto.BasicResponseDto;
+import com.hanwul.kbscbackend.exception.UserException;
 import com.hanwul.kbscbackend.exception.WrongCategoryId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,8 +82,8 @@ public class MissionService {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        Optional<Success> success = successRepository.findSuccessToday(start,end, account);
-        Success today = success.get();
+        List<Success> success = successRepository.findSuccessToday(start,end);
+        Success today = success.stream().filter(e -> e.getAccount() == account).findFirst().get();
         for(int i = 0; i < result.size(); i++){
             if(result.get(i).getId() == missionId){
                 if(result.get(i).getIsSuccess() == false){
@@ -116,8 +117,9 @@ public class MissionService {
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        List<Success> SuccessList = successRepository.findSuccessTopSevenDay(start,end,account);
-        return new  BasicResponseDto<>(200,"SUCCESS_LIST",SuccessList);
+        List<Success> SuccessList = successRepository.findSuccessTopSevenDay(start,end);
+        List<Success> result = SuccessList.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
+        return new  BasicResponseDto<>(200,"SUCCESS_LIST", result);
     }
 
     // create
@@ -173,6 +175,10 @@ public class MissionService {
     }
 
     private Account get_account(Principal principal) {
-        return accountRepository.findByUsername(principal.getName()).get();
+        Optional<Account> account = accountRepository.findByUsername(principal.getName());
+        if(!account.isPresent()){
+            throw new UserException();
+        }
+        return account.get();
     }
 }
