@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface SuccessRepository extends JpaRepository<Success, Long> {
 
     @Query("SELECT e FROM Success e WHERE  e.createdDateTime between :start and :end ")
-    Optional<Success> findSuccessToday(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Account account);
+    List<Success> findSuccessToday(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("SELECT e FROM Success e WHERE  e.createdDateTime between :start and :end ")
-    List<Success> findSuccessTopSevenDay(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, Account account);
+    List<Success> findSuccessTopSevenDay(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
