@@ -11,7 +11,6 @@ import com.hanwul.kbscbackend.domain.emotion.EmotionRepository;
 import com.hanwul.kbscbackend.domain.emotion.Status;
 import com.hanwul.kbscbackend.domain.mission.Mission;
 import com.hanwul.kbscbackend.domain.mission.MissionRepository;
-import com.hanwul.kbscbackend.domain.mission.category.MissionCategory;
 import com.hanwul.kbscbackend.domain.question.Question;
 import com.hanwul.kbscbackend.domain.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,27 +59,27 @@ public class DataInit {
             }
         }
 
-        Category category1 = Category.builder().category(MissionCategory.INSOMNIA).build();
-        Category category2 = Category.builder().category(MissionCategory.FEAR).build();
-        Category category3 = Category.builder().category(MissionCategory.ANOREXIA).build();
-
-        categoryRepository.save(category1);
-        categoryRepository.save(category2);
-        categoryRepository.save(category3);
-
-        List<Mission> missionList = new ArrayList<>();
-
-        missionList.add(Mission.builder().content("수면장애 미션1").category(category1).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("수면장애 미션2").category(category1).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("수면장애 미션3").category(category1).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("대인관계 미션1").category(category2).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("대인관계 미션2").category(category2).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("대인관계 미션3").category(category2).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("트라우마 미션1").category(category3).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("트라우마 미션2").category(category3).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("트라우마 미션3").category(category3).isSuccess(Boolean.FALSE).build());
-
-        missionRepository.saveAll(missionList);
+//        Category category1 = Category.builder().category(MissionCategory.INSOMNIA).build();
+//        Category category2 = Category.builder().category(MissionCategory.FEAR).build();
+//        Category category3 = Category.builder().category(MissionCategory.ANOREXIA).build();
+//
+//        categoryRepository.save(category1);
+//        categoryRepository.save(category2);
+//        categoryRepository.save(category3);
+//
+//        List<Mission> missionList = new ArrayList<>();
+//
+//        missionList.add(Mission.builder().content("수면장애 미션1").category(category1).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("수면장애 미션2").category(category1).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("수면장애 미션3").category(category1).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("대인관계 미션1").category(category2).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("대인관계 미션2").category(category2).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("대인관계 미션3").category(category2).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("트라우마 미션1").category(category3).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("트라우마 미션2").category(category3).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("트라우마 미션3").category(category3).isSuccess(Boolean.FALSE).build());
+//
+//        missionRepository.saveAll(missionList);
 
         Account account = accountRepository.findAll().stream().findFirst().get();
 
