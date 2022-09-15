@@ -95,7 +95,7 @@ public class MissionService {
         return new BasicResponseDto<>(200,"mission_clear",null);
     }
 
-    @Scheduled(cron = "0 40 18 * * *")
+    @Scheduled(cron = "0 0 22 * * *")
     @Transactional(readOnly = true)
     public void randommission(){
         long random = (int)(Math.random()*4)+1;
@@ -110,12 +110,24 @@ public class MissionService {
             log.info("미션 이름 {}", missionResponseDto.getCategory().getKorean());
         }
     }
-    public BasicResponseDto<List<Success>> successListCount(Principal principal){
+    public BasicResponseDto<List<Success>> successList(Principal principal){
         Account account = get_account(principal);
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
         List<Success> successList = successRepository.findSuccessTopSevenDay(start,end);
         List<Success> result = successList.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
+        return new  BasicResponseDto<>(200,"SUCCESS_LIST",result);
+    }
+
+    public BasicResponseDto<List<Long>> successListCount(Principal principal){
+        Account account = get_account(principal);
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(7), LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        List<Success> successList = successRepository.findSuccessTopSevenDay(start,end);
+//        List<Success> result = successList.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
+        List<Long> result = successList.stream().filter(e -> e.getAccount() == account)
+                .map(Success::getCount)
+                .collect(Collectors.toList());
         return new  BasicResponseDto<>(200,"SUCCESS_LIST",result);
     }
 

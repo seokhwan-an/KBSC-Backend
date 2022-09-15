@@ -39,6 +39,11 @@ public class MissionController {
 
     @GetMapping("/success")
     public BasicResponseDto<List<Success>> successList(Principal principal){
+        return missionService.successList(principal);
+    }
+
+    @GetMapping("/success-count")
+    public BasicResponseDto<List<Long>> successListCount(Principal principal){
         return missionService.successListCount(principal);
     }
 }
