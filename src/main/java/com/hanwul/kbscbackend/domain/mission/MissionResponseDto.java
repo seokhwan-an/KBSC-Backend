@@ -12,7 +12,7 @@ public class MissionResponseDto {
 
     private String content;
 
-    private String category;
+    private MissionCategory category;
 
     private Boolean isSuccess;
 }

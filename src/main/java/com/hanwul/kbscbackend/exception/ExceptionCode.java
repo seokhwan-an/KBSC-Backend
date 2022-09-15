@@ -15,7 +15,9 @@ public enum ExceptionCode {
     NOT_MY_ANSWER(HttpStatus.BAD_REQUEST.value(), "본인이 작성한 답변이 아닙니다."),
     NOT_FOUND_EMOTION(HttpStatus.BAD_REQUEST.value(), "같은 ID의 Emotion을 찾을 수 없습니다."),
     WRONG_MATCH_EMOTION(HttpStatus.BAD_REQUEST.value(), "본인이 작성한 게시글이 아닙니다."),
-    WRONG_EMOTION_TYPE(HttpStatus.BAD_REQUEST.value(), "type이 PUBLIC이나 PRIVATE가 아닙니다.");
+    WRONG_EMOTION_TYPE(HttpStatus.BAD_REQUEST.value(), "type이 PUBLIC이나 PRIVATE가 아닙니다."),
+    WRONG_MATCH_MISSION(HttpStatus.BAD_REQUEST.value(), "해당 미션이 존재하지 않습니다."),
+    WRONG_CATEGORY_ID(HttpStatus.BAD_REQUEST.value(), "해당 카테고리를 찾을 수 없습니다.");
 
     private final int code;
     private final String message;

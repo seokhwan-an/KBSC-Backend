@@ -65,4 +65,16 @@ public class ExControllerAdvice {
 
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongMatchMission.class)
+    public ErrorResult wrongMatchMission(IllegalArgumentException e){
+        return new  ErrorResult(ExceptionCode.WRONG_MATCH_MISSION);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongCategoryId.class)
+    public ErrorResult wrongCategoryId(IllegalArgumentException e){
+        return new ErrorResult(ExceptionCode.WRONG_CATEGORY_ID);
+    }
+
 }

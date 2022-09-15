@@ -70,25 +70,25 @@ public class DataInit {
 
         List<Mission> missionList = new ArrayList<>();
 
-        missionList.add(Mission.builder().content("수면장애 미션1").category(category1).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("수면장애 미션2").category(category1).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("수면장애 미션3").category(category1).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("대인관계 미션1").category(category2).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("대인관계 미션2").category(category2).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("대인관계 미션3").category(category2).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("트라우마 미션1").category(category3).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("트라우마 미션2").category(category3).isSuccess(Boolean.FALSE).build());
-        missionList.add(Mission.builder().content("트라우마 미션3").category(category3).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("수면장애 미션1").category(category1).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("수면장애 미션2").category(category1).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("수면장애 미션3").category(category1).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("대인관계 미션1").category(category2).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("대인관계 미션2").category(category2).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("대인관계 미션3").category(category2).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("트라우마 미션1").category(category3).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("트라우마 미션2").category(category3).isSuccess(Boolean.FALSE).build());
+//        missionList.add(Mission.builder().content("트라우마 미션3").category(category3).isSuccess(Boolean.FALSE).build());
+//
+//        missionRepository.saveAll(missionList);
+//
+//        Account account = accountRepository.findAll().stream().findFirst().get();
 
-        missionRepository.saveAll(missionList);
-
-        Account account = accountRepository.findAll().stream().findFirst().get();
-
-        List<Emotion> emotionList = new ArrayList<>();
-        emotionList.add(Emotion.builder().content("감정1").account(account).status(Status.PUBLIC).build());
-        emotionList.add(Emotion.builder().content("감정2").account(account).status(Status.PUBLIC).build());
-        emotionList.add(Emotion.builder().content("감정3").account(account).status(Status.PUBLIC).build());
-        emotionList.add(Emotion.builder().content("감정4").account(account).status(Status.PRIVATE).build());
-        emotionRepository.saveAll(emotionList);
+//        List<Emotion> emotionList = new ArrayList<>();
+//        emotionList.add(Emotion.builder().content("감정1").account(account).status(Status.PUBLIC).build());
+//        emotionList.add(Emotion.builder().content("감정2").account(account).status(Status.PUBLIC).build());
+//        emotionList.add(Emotion.builder().content("감정3").account(account).status(Status.PUBLIC).build());
+//        emotionList.add(Emotion.builder().content("감정4").account(account).status(Status.PRIVATE).build());
+//        emotionRepository.saveAll(emotionList);
     }
 }
