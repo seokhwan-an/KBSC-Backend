@@ -4,6 +4,8 @@ import com.hanwul.kbscbackend.domain.mission.Mission;
 import com.hanwul.kbscbackend.domain.mission.MissionRepository;
 import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccount;
 import com.hanwul.kbscbackend.domain.mission.missionaccount.MissionAccountRepository;
+import com.hanwul.kbscbackend.domain.mission.success.Success;
+import com.hanwul.kbscbackend.domain.mission.success.SuccessRepository;
 import com.hanwul.kbscbackend.domain.security.JwtTokenProvider;
 import com.hanwul.kbscbackend.exception.UserException;
 import com.hanwul.kbscbackend.exception.WrongInputException;
@@ -32,6 +34,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final MissionAccountRepository missionAccountRepository;
     private final MissionRepository missionRepository;
+    private final SuccessRepository successRepository;
 
     //회원 가입
     @Transactional
@@ -50,7 +53,11 @@ public class AccountService {
                     .build();
             missionAccountRepository.save(build);
         });
-
+        Success success = Success.builder()
+                .account(account)
+                .count(0L)
+                .build();
+        successRepository.save(success);
         log.info("{}", signUpDto);
         return account;
     }
