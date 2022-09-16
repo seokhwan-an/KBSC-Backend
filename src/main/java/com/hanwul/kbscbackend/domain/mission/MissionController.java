@@ -1,6 +1,8 @@
 package com.hanwul.kbscbackend.domain.mission;
 
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
+import com.hanwul.kbscbackend.domain.mission.category.CategoryResponseDto;
+import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccount;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountService;
 import com.hanwul.kbscbackend.domain.mission.success.Success;
@@ -45,5 +47,10 @@ public class MissionController {
     @GetMapping("/success-count")
     public BasicResponseDto<List<Long>> successListCount(Principal principal){
         return missionService.successListCount(principal);
+    }
+
+    @GetMapping("/categories")
+    public BasicResponseDto<List<CategoryResponseDto>> clickedToggle(Principal principal){
+        return missionService.getCategoris(principal);
     }
 }

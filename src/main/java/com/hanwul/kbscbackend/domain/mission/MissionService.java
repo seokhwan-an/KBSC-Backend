@@ -4,6 +4,7 @@ import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.account.AccountRepository;
 import com.hanwul.kbscbackend.domain.mission.category.Category;
 import com.hanwul.kbscbackend.domain.mission.category.CategoryRepository;
+import com.hanwul.kbscbackend.domain.mission.category.CategoryResponseDto;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccount;
 import com.hanwul.kbscbackend.domain.mission.categoryaccount.CategoryAccountRepository;
 import com.hanwul.kbscbackend.domain.mission.success.Success;
@@ -95,7 +96,7 @@ public class MissionService {
         return new BasicResponseDto<>(200,"mission_clear",null);
     }
 
-    @Scheduled(cron = "0 0 22 * * *")
+    @Scheduled(cron = "0 5 23 * * *")
     @Transactional(readOnly = true)
     public void randommission(){
         long random = (int)(Math.random()*4)+1;
@@ -129,6 +130,28 @@ public class MissionService {
                 .map(Success::getCount)
                 .collect(Collectors.toList());
         return new  BasicResponseDto<>(200,"SUCCESS_LIST",result);
+    }
+
+    public BasicResponseDto<List<CategoryResponseDto>> getCategoris(Principal principal){
+        Account account = get_account(principal);
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        List<CategoryAccount> checkedCategoryAccount = categoryAccountRepository.findCategoryAccountToday(start,end);
+        List<CategoryAccount> today = checkedCategoryAccount.stream().filter(e -> e.getAccount() == account).collect(Collectors.toList());
+        List<Category> checkedCategories = today.stream()
+                .map(CategoryAccount::getCategory)
+                .collect(Collectors.toList());
+        List<Category> allCategories = categoryRepository.findAll();
+
+        List<CategoryResponseDto> result = new ArrayList<>();
+        for (Category category : allCategories) {
+            CategoryResponseDto responseDto = new CategoryResponseDto(category.getId(), category.getCategory().getKorean());
+            if (checkedCategories.contains(category)) {
+                responseDto.setChecked(true);
+            }
+            result.add(responseDto);
+        }
+        return new BasicResponseDto<>(200, "MISSION_CATEGORY", result);
     }
 
     public MissionResponseDto entityToDto(Mission mission) {
