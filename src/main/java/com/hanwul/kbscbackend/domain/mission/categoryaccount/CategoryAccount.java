@@ -1,5 +1,6 @@
 package com.hanwul.kbscbackend.domain.mission.categoryaccount;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanwul.kbscbackend.common.BaseEntity;
 import com.hanwul.kbscbackend.domain.account.Account;
 import com.hanwul.kbscbackend.domain.mission.category.Category;
@@ -21,7 +22,7 @@ public class CategoryAccount extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
     @Builder
