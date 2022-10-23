@@ -30,6 +30,12 @@ https://github.com/leeideal/KBSC-Frontend
 ![image](https://user-images.githubusercontent.com/81295661/197401772-f90b0af0-50fb-43bb-887e-45c1422630b5.png)
 
 <br> <br>
+
+### Entity 다이어그램
+![image](https://user-images.githubusercontent.com/81295661/197401990-a878ddce-2be9-4fbc-91a2-8aec300e7217.png)
+
+<br> <br>
+
 <br> <br>
 
 
