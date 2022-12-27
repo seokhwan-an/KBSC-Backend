@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include:
+      - KEY
+      - aws
+      - credentials
+      - cloud
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      enabled: true
+      max-request-size: 215MB
